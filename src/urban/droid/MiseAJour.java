@@ -4,47 +4,47 @@ import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
 
-public class MiseÀJour 
+public class MiseAJour 
 {
 
-	// afin de récupérer les fichiers disponibles en ressources
+	// afin de rï¿½cupï¿½rer les fichiers disponibles en ressources
 	private final Resources r = Resources.getSystem();
 	
-	// notre lien de check de mise à jour
+	// notre lien de check de mise a jour
 	// de la forme : http://www.site.com/urbandroid/check.urb
 	private String urlCheck;
 	
-	public MiseÀJour(String urlCheck)
+	public MiseAJour(String urlCheck)
 	{
-		// vérifier si le lien est valide
+		// vï¿½rifier si le lien est valide
 		this.urlCheck = urlCheck;
 	}
 	
-	// vérifie si une mise à jour doit être faites ou non
+	// vï¿½rifie si une mise ï¿½ jour doit ï¿½tre faites ou non
 	// retourne TRUE si c'est le cas
 	// retourne FALSE sinon
-	public boolean testMàj()
+	public boolean testMaj()
 	{
-		// télécharger le fichier contenant le numéro de version de la bdd
-		// vérifier son contenus avec le string que l'on a déjà
-		// si il est égal retourne faux
+		// tï¿½lï¿½charger le fichier contenant le numï¿½ro de version de la bdd
+		// vï¿½rifier son contenus avec le string que l'on a dï¿½jï¿½
+		// si il est ï¿½gal retourne faux
 		return false;
 		// sinon retourne vrai sinon
 		// return true;
 	}
-	// effectue une mise à jour de la base de donnée
-	// précondition : this.testMàj() == false
-	// postcondition : string checkMàj mis à jour ainsi que la base de donnée
-	public boolean faireMàj() throws Exception
+	// effectue une mise ï¿½ jour de la base de donnï¿½e
+	// prÃ©condition : this.testMaj() == false
+	// postcondition : string checkMï¿½j mis ï¿½ jour ainsi que la base de donnï¿½e
+	public boolean faireMaj() throws Exception
 	{
-		if (!this.testMàj())
-			throw(new Exception("MiseÀJour.testMàj() - Vérification mise à jour failed."));
+		if (!this.testMaj())
+			throw(new Exception("MiseAJour.testMaj() - VÃ©rification mise a jour failed."));
 		
-		// téléchargez le nouveau fichier check.urb et le mettre à la place de l'ancien
+		// tï¿½lï¿½chargez le nouveau fichier check.urb et le mettre ï¿½ la place de l'ancien
 		String versionActuelle = r.getString(android.R.string.untitled);
 		
-		// téléchargez la nouvelle base de données et la mettre à la place de l'ancienne
-		// si le téléchargement s'est bien passé alors retourne vrai
+		// tï¿½lï¿½chargez la nouvelle base de donnï¿½es et la mettre ï¿½ la place de l'ancienne
+		// si le tï¿½lï¿½chargement s'est bien passï¿½ alors retourne vrai
 		// sinon retourne faux
 		return false;
 	}
