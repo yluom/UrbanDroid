@@ -1,3 +1,0 @@
-INDEX VERSION 1.126+C:\Users\floppybomb\Desktop\workspace\.metadata\.plugins\org.eclipse.jdt.core
-3298081217.index
-2832757538.index
