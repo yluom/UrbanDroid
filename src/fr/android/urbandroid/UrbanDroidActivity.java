@@ -8,6 +8,10 @@ public class UrbanDroidActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //maj();
+        //remplirTout(bdd.sql);
         setContentView(R.layout.main);
+        
     }
+    public void super.
 }

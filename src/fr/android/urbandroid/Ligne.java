@@ -3,6 +3,8 @@
  */
 package fr.android.urbandroid;
 
+import java.util.*;
+
 
 /**
  * @author leo
@@ -10,9 +12,10 @@ package fr.android.urbandroid;
  */
 public class Ligne {
 	// Attributs
-	private String nom; // 
-	private TypeLigne type; // type de la ligne, ex: METRO
-	
+	private String nom; // nom de la ligne... ex: A, B, T1, bus: 1, 2 , 3 .. etc
+	private TypeLigne type; // type de la ligne, ex: METRO, BUS..
+	//private ArrayList<Station> stations; // tableau des stations de la ligne
+	private Map<Station, Horaires[]> stations;
 	
 	
 	// Methodes
