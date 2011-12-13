@@ -20,13 +20,16 @@ public class UrbanDroidActivity extends Activity {
           @Override
           public void onClick(View actuelView)
           {
-              setContentView(R.layout.itineraire);
-        	/*TextView t = (TextView)findViewById(R.id.textView1);
+        	  TextView t = (TextView)findViewById(R.id.textView1);
+            setContentView(R.layout.itineraire);
+        	TextView t = (TextView)findViewById(R.id.textView1);
         	String test = "aaaa";
-        	t.setText((CharSequence)test);*/
+        	t.setText((CharSequence)test);
           }
         };
         ImageView iv = (ImageView) findViewById(R.id.itin);
+        iv.setOnClickListener(changerTexte);
+        iv = (ImageView) findViewById(R.id.plan);
         iv.setOnClickListener(changerTexte);
     }
 
