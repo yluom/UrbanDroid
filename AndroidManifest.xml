@@ -18,6 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity android:name=".DisplayTarifActivity" />
+        <activity android:name=".DisplayItineraireActivity" />
+        <activity android:name=".DisplayHorairesActivity" />
+        <activity android:name=".DisplayFavorisActivity" />
     </application>
 
 </manifest>

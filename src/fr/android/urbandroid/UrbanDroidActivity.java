@@ -1,6 +1,7 @@
 package fr.android.urbandroid;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,18 +18,25 @@ public class UrbanDroidActivity extends Activity {
         setContentView(R.layout.plan);
         
         // code qui gere les transistions du menu
+
         OnClickListener menuSwitcher = new OnClickListener()
         {
           @Override
           public void onClick(View actualView)
           {
+              Intent intent;
         	  switch(actualView.getId())
         	  {
-        	  	case R.id.btn_tar: setContentView(R.layout.tarif); break;
-        	  	case R.id.btn_iti: setContentView(R.layout.itineraire); break;
-        	  	case R.id.btn_hor: setContentView(R.layout.horaires); break;
-        	  	case R.id.btn_fav: setContentView(R.layout.favoris); break;
-        	  	case R.id.btn_pla: setContentView(R.layout.plan); break;
+        	  	case R.id.btn_tar: intent = new Intent(UrbanDroidActivity.this, DisplayTarifActivity.class);
+        	  						startActivity(intent); break;
+         	  	case R.id.btn_iti: intent = new Intent(UrbanDroidActivity.this, DisplayItineraireActivity.class);
+									startActivity(intent); break;
+        	  	case R.id.btn_hor: intent = new Intent(UrbanDroidActivity.this, DisplayHorairesActivity.class);
+        	  						startActivity(intent); break;
+        	  	case R.id.btn_fav: intent = new Intent(UrbanDroidActivity.this, DisplayFavorisActivity.class);
+        	  						startActivity(intent); break;
+        	  	case R.id.btn_pla: intent = new Intent(UrbanDroidActivity.this, UrbanDroidActivity.class);
+        	  						startActivity(intent); break;
         	  }
             
           }
