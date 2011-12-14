@@ -31,19 +31,22 @@ public final class R {
         public static final int tisseo=0x7f020011;
     }
     public static final class id {
-        public static final int btn_fav=0x7f050001;
-        public static final int btn_hor=0x7f050002;
-        public static final int btn_iti=0x7f050004;
-        public static final int btn_pla=0x7f050003;
-        public static final int btn_tar=0x7f050005;
+        public static final int btn_fav=0x7f050000;
+        public static final int btn_hor=0x7f050001;
+        public static final int btn_iti=0x7f050003;
+        public static final int btn_pla=0x7f050002;
+        public static final int btn_tar=0x7f050004;
         public static final int imageView6=0x7f050008;
         public static final int imageView8=0x7f050007;
         public static final int imageView9=0x7f050006;
-        public static final int titre=0x7f050000;
+        public static final int titre=0x7f050005;
     }
     public static final class layout {
-        public static final int plan=0x7f030000;
-        public static final int tarif=0x7f030001;
+        public static final int favoris=0x7f030000;
+        public static final int horaires=0x7f030001;
+        public static final int itineraire=0x7f030002;
+        public static final int plan=0x7f030003;
+        public static final int tarif=0x7f030004;
     }
     public static final class string {
         public static final int app_name=0x7f040001;
