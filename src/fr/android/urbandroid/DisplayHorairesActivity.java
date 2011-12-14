@@ -12,7 +12,7 @@ public class DisplayHorairesActivity extends Activity
 {
      public void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
-     setContentView(R.layout.horaires);
+     setContentView(R.layout.horairesm);
      
      OnClickListener menuSwitcher = new OnClickListener()
      {
@@ -32,6 +32,10 @@ public class DisplayHorairesActivity extends Activity
       	  						startActivity(intent); break;
       	  	case R.id.btn_pla: intent = new Intent(DisplayHorairesActivity.this, UrbanDroidActivity.class);
       	  						startActivity(intent); break;
+// TODO: faire une activity par onglet!!! :)      	  						
+    	  	case R.id.ongletMetro: setContentView(R.layout.horairesm); break;
+    	  	case R.id.ongletBus: setContentView(R.layout.horairesb); break;
+    	  	case R.id.ongletTram: setContentView(R.layout.horairest); break;
       	  }
          
        }
@@ -47,6 +51,13 @@ public class DisplayHorairesActivity extends Activity
      iv4.setOnClickListener(menuSwitcher);
      ImageView iv5 = (ImageView) findViewById(R.id.btn_pla);
      iv5.setOnClickListener(menuSwitcher);
+     ImageView iv6 = (ImageView) findViewById(R.id.ongletMetro);
+     iv6.setOnClickListener(menuSwitcher);
+     ImageView iv7 = (ImageView) findViewById(R.id.ongletTram);
+     iv7.setOnClickListener(menuSwitcher);
+     ImageView iv8 = (ImageView) findViewById(R.id.ongletBus);
+     iv8.setOnClickListener(menuSwitcher);
+
      
    }
 }

@@ -18,7 +18,6 @@ import java.io.*;
 
 public class MiseAJour
 {
-	
 	// l'url que l'on recupere en parametre
 	private String url;
 	private String versionActuelle;

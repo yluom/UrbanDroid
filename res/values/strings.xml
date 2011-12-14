@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, AndroidActivity!</string>
-    <string name="app_name">Android</string>
+    <string name="app_name">UrbanDroid</string>
+    <string name="versionBdd">0</string>
+    <string name="urlBdd">http://nixitup.com/urbandroid/urbdroid.bdd</string>
 </resources>

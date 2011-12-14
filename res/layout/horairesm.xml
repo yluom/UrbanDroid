@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#eeeeee">
+
+    <ImageView
+        android:id="@+id/btn_fav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/favb" />
+
+    <ImageView
+        android:id="@+id/btn_hor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/btn_fav"
+        android:src="@drawable/horg" />
+
+    <ImageView
+        android:id="@+id/btn_pla"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/plab" />
+
+    <ImageView
+        android:id="@+id/btn_iti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/btn_hor"
+        android:src="@drawable/itib" />
+
+    <ImageView
+        android:id="@+id/btn_tar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/btn_pla"
+        android:src="@drawable/tarb" />
+    <ImageView android:layout_height="wrap_content" android:id="@+id/imageView1" android:src="@drawable/bandhor" android:layout_width="wrap_content" android:layout_alignParentTop="true" android:layout_alignParentLeft="true"></ImageView>
+    <ImageView android:layout_height="wrap_content" android:src="@drawable/ongmetroy" android:layout_width="wrap_content" android:layout_below="@+id/imageView1" android:layout_alignParentLeft="true" android:id="@+id/ongletMetro"></ImageView>
+    <ImageView android:layout_height="wrap_content" android:src="@drawable/ongtramn" android:layout_width="wrap_content" android:layout_below="@+id/imageView1" android:layout_alignParentRight="true" android:id="@+id/ongletTram"></ImageView>
+    <ImageView android:layout_height="wrap_content" android:id="@+id/ongletBus" android:src="@drawable/ongbusn" android:layout_width="wrap_content" android:layout_alignTop="@+id/ongletTram" android:layout_toLeftOf="@+id/ongletTram"></ImageView>
+    <TextView android:gravity="center_vertical|center_horizontal" android:background="@drawable/bandeau" android:id="@+id/textView1" android:layout_height="wrap_content" android:text="Métro lignes A et B" android:textColor="#0b327f" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_below="@+id/ongletMetro" android:layout_alignParentLeft="true" android:layout_marginTop="14dp"></TextView>
+    <TextView android:id="@+id/textView2" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_below="@+id/textView1" android:layout_marginTop="68dp" android:text="Premier départ : 5h15  Dernier départ : 0h du dimanche au jeudi 1h le vendredi et le samedi Temps d'attente maximum : ..................." android:textColor="#000000" android:textSize="10pt"></TextView>
+
+</RelativeLayout>
