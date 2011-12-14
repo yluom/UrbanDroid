@@ -1,17 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="fill_parent" android:layout_width="fill_parent" android:baselineAligned="true" android:orientation="horizontal">
-    <ImageView android:src="@drawable/boutonplon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom" android:focusableInTouchMode="true" android:id="@+id/plan"></ImageView>
-    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/boutonitinoff" android:layout_gravity="bottom" android:focusable="true" android:focusableInTouchMode="true" android:onClick="itin" android:id="@+id/itin"></ImageView>
-    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/boutontarifoff" android:layout_gravity="bottom" android:focusable="true" android:focusableInTouchMode="true" android:id="@+id/tarif"></ImageView>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="144dp"
+    <ImageView
+        android:id="@+id/titre"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/plan" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/band" >
+    </ImageView>
 
-    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/horroff" android:layout_gravity="bottom" android:focusable="true" android:id="@+id/hor"></ImageView>
-    <ImageView android:src="@drawable/favoff" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_gravity="bottom" android:focusable="true" android:id="@+id/fav"></ImageView>
+    <ImageView
+        android:id="@+id/btn_fav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/favb" />
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/btn_hor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/btn_fav"
+        android:src="@drawable/horb"
+         />
+
+    <ImageView
+        android:id="@+id/btn_pla"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/plag" />
+
+    <ImageView
+        android:id="@+id/btn_iti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/btn_hor"
+        android:src="@drawable/itib" />
+
+    <ImageView
+        android:id="@+id/btn_tar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/btn_pla"
+        android:src="@drawable/tarb" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_fav"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/tisseo" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/titre"
+        android:src="@drawable/onggmapb" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titre"
+        android:layout_toLeftOf="@+id/imageView9"
+        android:src="@drawable/onglettisseog" />
+
+</RelativeLayout>

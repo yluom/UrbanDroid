@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="fill_parent" android:layout_width="fill_parent" android:baselineAligned="true" android:orientation="horizontal">
-    <ImageView android:src="@drawable/boutonplon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="bottom" android:focusableInTouchMode="true" android:id="@+id/plan"></ImageView>
-    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/boutonitinoff" android:layout_gravity="bottom" android:focusable="true" android:focusableInTouchMode="true" android:onClick="itin" android:id="@+id/itin"></ImageView>
-    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/boutontarifoff" android:layout_gravity="bottom" android:focusable="true" android:focusableInTouchMode="true" android:id="@+id/tarif"></ImageView>
-    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/horroff" android:layout_gravity="bottom" android:focusable="true" android:id="@+id/hor"></ImageView>
-    <ImageView android:src="@drawable/favoff" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_gravity="bottom" android:focusable="true" android:id="@+id/fav"></ImageView>
-</LinearLayout>

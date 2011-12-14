@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="hello">Hello World, UrbanDroidActivity!</string>
-    <string name="app_name">UrbanDroid</string>
-    <string name="plan">Plan</string>
-
+    <string name="hello">Hello World, AndroidActivity!</string>
+    <string name="app_name">Android</string>
 </resources>
