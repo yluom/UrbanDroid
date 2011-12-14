@@ -15,22 +15,20 @@ public class UrbanDroidActivity extends Activity {
         //maj();
         //remplirTout(bdd.sql);
         setContentView(R.layout.plan);
-        OnClickListener changerTexte = new OnClickListener()
+        
+        OnClickListener menuSwitcher = new OnClickListener()
         {
           @Override
           public void onClick(View actuelView)
           {
-        	  TextView t = (TextView)findViewById(R.id.textView1);
-            setContentView(R.layout.itineraire);
-        	TextView t = (TextView)findViewById(R.id.textView1);
-        	String test = "aaaa";
-        	t.setText((CharSequence)test);
+            setContentView(R.layout.tarif);
           }
         };
-        ImageView iv = (ImageView) findViewById(R.id.itin);
-        iv.setOnClickListener(changerTexte);
-        iv = (ImageView) findViewById(R.id.plan);
-        iv.setOnClickListener(changerTexte);
+        ImageView iv = (ImageView) findViewById(R.id.btn_tar);
+        iv.setOnClickListener(menuSwitcher);
+        
+       /* iv = (ImageView) findViewById(R.id.plan);
+        iv.setOnClickListener(changerTexte);*/
     }
 
 }
