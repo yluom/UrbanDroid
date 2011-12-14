@@ -3,5 +3,6 @@
 
     <string name="hello">Hello World, UrbanDroidActivity!</string>
     <string name="app_name">UrbanDroid</string>
+    <string name="plan">Plan</string>
 
 </resources>
