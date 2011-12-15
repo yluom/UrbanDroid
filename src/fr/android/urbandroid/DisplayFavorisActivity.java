@@ -1,5 +1,6 @@
 package fr.android.urbandroid;
  
+import fr.android.urbandroid.*;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.*;
@@ -16,7 +17,6 @@ public class DisplayFavorisActivity extends Activity
      
      OnClickListener menuSwitcher = new OnClickListener()
      {
-       @Override
        public void onClick(View actualView)
        {
            Intent intent;

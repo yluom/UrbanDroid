@@ -39,9 +39,10 @@ public final class R {
         public static final int ongtramy=0x7f020019;
         public static final int plab=0x7f02001a;
         public static final int plag=0x7f02001b;
-        public static final int tarb=0x7f02001c;
-        public static final int targ=0x7f02001d;
-        public static final int tisseo=0x7f02001e;
+        public static final int plantisseo=0x7f02001c;
+        public static final int tarb=0x7f02001d;
+        public static final int targ=0x7f02001e;
+        public static final int tisseo=0x7f02001f;
     }
     public static final class id {
         public static final int btn_fav=0x7f050000;
@@ -50,12 +51,13 @@ public final class R {
         public static final int btn_pla=0x7f050002;
         public static final int btn_tar=0x7f050004;
         public static final int imageView1=0x7f050005;
-        public static final int imageView6=0x7f050010;
+        public static final int imageView6=0x7f050011;
         public static final int ongletBus=0x7f050008;
-        public static final int ongletGoogleMap=0x7f05000e;
+        public static final int ongletGoogleMap=0x7f05000f;
         public static final int ongletMetro=0x7f050007;
-        public static final int ongletTisseo=0x7f05000f;
+        public static final int ongletTisseo=0x7f05000e;
         public static final int ongletTram=0x7f050009;
+        public static final int plantisseo=0x7f050010;
         public static final int spinner1=0x7f05000b;
         public static final int textView1=0x7f05000a;
         public static final int textView2=0x7f05000c;

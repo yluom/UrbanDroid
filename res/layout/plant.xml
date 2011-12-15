@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" 
-    android:background="#eeeeee">
+    android:layout_height="fill_parent"
+    android:background="#eeeeee" >
 
     <ImageView
         android:id="@+id/titrePlan"
@@ -27,8 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/btn_fav"
-        android:src="@drawable/horb"
-         />
+        android:src="@drawable/horb" />
 
     <ImageView
         android:id="@+id/btn_pla"
@@ -53,8 +52,40 @@
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/btn_pla"
         android:src="@drawable/tarb" />
-    <ImageView android:layout_height="wrap_content" android:id="@+id/ongletGoogleMap" android:src="@drawable/onggmapg" android:layout_width="wrap_content" android:layout_alignTop="@+id/ongletTisseo" android:layout_alignParentRight="true"></ImageView>
-    <ImageView android:layout_height="wrap_content" android:id="@+id/imageView1" android:src="@drawable/bandpla" android:layout_width="wrap_content" android:layout_alignParentTop="true" android:layout_alignParentLeft="true"></ImageView>
-    <ImageView android:layout_height="wrap_content" android:id="@+id/ongletTisseo" android:src="@drawable/onglettisseob" android:layout_width="wrap_content" android:layout_below="@+id/imageView1" android:layout_toLeftOf="@+id/ongletGoogleMap"></ImageView>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/bandpla" >
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/ongletGoogleMap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/titrePlan"
+        android:src="@drawable/onggmapg" />
+
+    <ImageView
+        android:id="@+id/ongletTisseo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titrePlan"
+        android:layout_toLeftOf="@+id/ongletGoogleMap"
+        android:src="@drawable/onglettisseob" />
+
+    <ImageView
+        android:id="@+id/plantisseo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_fav"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ongletGoogleMap"
+        android:src="@drawable/tisseo" 
+        android:scaleType="matrix"/>
 
 </RelativeLayout>

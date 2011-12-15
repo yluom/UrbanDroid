@@ -1,5 +1,6 @@
 package fr.android.urbandroid;
  
+import fr.android.urbandroid.*;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.*;
@@ -12,11 +13,9 @@ public class DisplayTarifActivity extends Activity
 {
      public void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
-     setContentView(R.layout.tarif);
-     
+     setContentView(R.layout.tarif);    
      OnClickListener menuSwitcher = new OnClickListener()
      {
-       @Override
        public void onClick(View actualView)
        {
            Intent intent;

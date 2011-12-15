@@ -1,5 +1,6 @@
 package fr.android.urbandroid;
  
+import fr.android.urbandroid.*;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.*;
@@ -16,7 +17,6 @@ public class DisplayHorairesActivity extends Activity
      
      OnClickListener menuSwitcher = new OnClickListener()
      {
-       @Override
        public void onClick(View actualView)
        {
            Intent intent;
@@ -32,10 +32,12 @@ public class DisplayHorairesActivity extends Activity
       	  						startActivity(intent); break;
       	  	case R.id.btn_pla: intent = new Intent(DisplayHorairesActivity.this, UrbanDroidActivity.class);
       	  						startActivity(intent); break;
-// TODO: faire une activity par onglet!!! :)      	  						
-    	  	case R.id.ongletMetro: setContentView(R.layout.horairesm); break;
-    	  	case R.id.ongletBus: setContentView(R.layout.horairesb); break;
-    	  	case R.id.ongletTram: setContentView(R.layout.horairest); break;
+      	  	case R.id.ongletMetro: intent = new Intent(DisplayHorairesActivity.this, DisplayHorairesActivity.class);
+				startActivity(intent); break;
+      	  	case R.id.ongletBus: intent = new Intent(DisplayHorairesActivity.this, DisplayHorairesBActivity.class);
+			startActivity(intent); break;
+      	  	case R.id.ongletTram: intent = new Intent(DisplayHorairesActivity.this, DisplayHorairesTActivity.class);
+				startActivity(intent); break;
       	  }
          
        }
@@ -51,13 +53,12 @@ public class DisplayHorairesActivity extends Activity
      iv4.setOnClickListener(menuSwitcher);
      ImageView iv5 = (ImageView) findViewById(R.id.btn_pla);
      iv5.setOnClickListener(menuSwitcher);
-     ImageView iv6 = (ImageView) findViewById(R.id.ongletMetro);
+     ImageView iv6 = (ImageView) findViewById(R.id.ongletBus);
      iv6.setOnClickListener(menuSwitcher);
      ImageView iv7 = (ImageView) findViewById(R.id.ongletTram);
      iv7.setOnClickListener(menuSwitcher);
-     ImageView iv8 = (ImageView) findViewById(R.id.ongletBus);
+     ImageView iv8 = (ImageView) findViewById(R.id.ongletMetro);
      iv8.setOnClickListener(menuSwitcher);
-
      
    }
 }
