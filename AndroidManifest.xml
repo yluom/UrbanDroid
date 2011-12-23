@@ -25,6 +25,7 @@
         <activity android:name=".DisplayHorairesBActivity" />
         <activity android:name=".DisplayHorairesTActivity" />
         <activity android:name=".DisplayPlanGoogleActivity" />
+        <activity android:name=".DisplayPlanActivity" />
 	
 
 	

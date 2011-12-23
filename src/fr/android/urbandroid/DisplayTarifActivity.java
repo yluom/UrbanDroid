@@ -29,7 +29,7 @@ public class DisplayTarifActivity extends Activity
       	  						startActivity(intent); break;
       	  	case R.id.btn_fav: intent = new Intent(DisplayTarifActivity.this, DisplayFavorisActivity.class);
       	  						startActivity(intent); break;
-      	  	case R.id.btn_pla: intent = new Intent(DisplayTarifActivity.this, UrbanDroidActivity.class);
+      	  	case R.id.btn_pla: intent = new Intent(DisplayTarifActivity.this, DisplayPlanActivity.class);
       	  						startActivity(intent); break;
       	  }
          

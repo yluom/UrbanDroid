@@ -30,7 +30,7 @@ public class DisplayHorairesActivity extends Activity
       	  						startActivity(intent); break;
       	  	case R.id.btn_fav: intent = new Intent(DisplayHorairesActivity.this, DisplayFavorisActivity.class);
       	  						startActivity(intent); break;
-      	  	case R.id.btn_pla: intent = new Intent(DisplayHorairesActivity.this, UrbanDroidActivity.class);
+      	  	case R.id.btn_pla: intent = new Intent(DisplayHorairesActivity.this, DisplayPlanActivity.class);
       	  						startActivity(intent); break;
       	  	case R.id.ongletMetro: intent = new Intent(DisplayHorairesActivity.this, DisplayHorairesActivity.class);
 				startActivity(intent); break;

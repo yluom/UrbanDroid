@@ -30,11 +30,11 @@ public class DisplayPlanGoogleActivity extends Activity
       	  						startActivity(intent); break;
       	  	case R.id.btn_fav: intent = new Intent(DisplayPlanGoogleActivity.this, DisplayFavorisActivity.class);
       	  						startActivity(intent); break;
-      	  	case R.id.btn_pla: intent = new Intent(DisplayPlanGoogleActivity.this, UrbanDroidActivity.class);
+      	  	case R.id.btn_pla: intent = new Intent(DisplayPlanGoogleActivity.this, DisplayPlanActivity.class);
       	  						startActivity(intent); break;
     	  	case R.id.ongletGoogleMap: intent = new Intent(DisplayPlanGoogleActivity.this, DisplayPlanGoogleActivity.class);
 				startActivity(intent); break;
-    	  	case R.id.ongletTisseo: intent = new Intent(DisplayPlanGoogleActivity.this, UrbanDroidActivity.class);
+    	  	case R.id.ongletTisseo: intent = new Intent(DisplayPlanGoogleActivity.this, DisplayPlanActivity.class);
 				startActivity(intent); break;
     	  }
          
