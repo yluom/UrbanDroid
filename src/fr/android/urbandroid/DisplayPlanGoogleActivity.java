@@ -1,16 +1,20 @@
 package fr.android.urbandroid;
- 
-import fr.android.urbandroid.*;
-import android.app.Activity;
+
 import android.content.Intent;
+import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.os.Bundle;
-import android.widget.TextView;
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapView;
  
-public class DisplayPlanGoogleActivity extends Activity
+public class DisplayPlanGoogleActivity extends MapActivity
 {
+	
+	private static final String TAG = "DisplayPlanGoogleActivity";
+
      public void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
      setContentView(R.layout.plang);
@@ -39,8 +43,9 @@ public class DisplayPlanGoogleActivity extends Activity
     	  }
          
        }
+       
      };
-   
+     
      ImageView iv = (ImageView) findViewById(R.id.btn_tar);
      iv.setOnClickListener(menuSwitcher);
      ImageView iv2 = (ImageView) findViewById(R.id.btn_iti);
@@ -56,5 +61,21 @@ public class DisplayPlanGoogleActivity extends Activity
      ImageView iv7 = (ImageView) findViewById(R.id.ongletTisseo);
      iv7.setOnClickListener(menuSwitcher);
      
-   }
+     try
+     {
+    	 MapView mapView = (MapView) this.findViewById(R.id.mapView);
+    	 mapView.setBuiltInZoomControls(true);
+     }
+     catch (Exception ex)
+     {
+    	 Log.e(TAG, Log.getStackTraceString(ex));
+    	 Toast.makeText(this, "#6 :" + ex.getStackTrace().toString(), 10).show();
+     }
+     }
+     
+     @Override
+     protected boolean isRouteDisplayed()
+     {
+       return false;
+     }
 }
