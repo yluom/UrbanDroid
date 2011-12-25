@@ -131,7 +131,7 @@ public class DisplayPlanGoogleActivity extends MapActivity implements LocationLi
 	 }
  	
 	 
-	 // Tentative de menu, a revoir! (y'a pas mal de bon ;) )
+	 // Tentative de menu, a revoir (force close :/) ! (mais y'a pas mal de bon ;) )
      @Override
      public boolean onCreateOptionsMenu(Menu menu) {        
      	menu.add(0,100,0,"Zoom +");
