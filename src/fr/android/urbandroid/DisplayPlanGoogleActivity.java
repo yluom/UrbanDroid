@@ -7,6 +7,8 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import com.google.android.maps.GeoPoint;
@@ -15,7 +17,7 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
  
-public class DisplayPlanGoogleActivity extends MapActivity
+public class DisplayPlanGoogleActivity extends MapActivity implements LocationListener
 {
 	
 	private static final String TAG = "DisplayPlanGoogleActivity";
@@ -23,6 +25,7 @@ public class DisplayPlanGoogleActivity extends MapActivity
 	private MapController mc;
 	//inutile:private GeoPoint location;
 	private MyLocationOverlay userLocation = null;
+	private LocationManager lm;
 	
      public void onCreate(Bundle savedInstanceState) {
 	     super.onCreate(savedInstanceState);
@@ -83,10 +86,16 @@ public class DisplayPlanGoogleActivity extends MapActivity
 	    	 Log.e(TAG, Log.getStackTraceString(ex));
 	    	 Toast.makeText(this, "#6 :" + ex.getStackTrace().toString(), 10).show();
 	     }
-	     // instanciation de la localisation gps
-	     this.userLocation = new MyLocationOverlay(getApplicationContext(), mapView);
 	     // On toppe le controleur (pour positionner le pt central)
 		 this.mc = this.mapView.getController();
+		 // on instancie le LocationManager qui va permettre de suivre les changement de positions
+		 lm = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+		 lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, this);
+		 lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, this);
+		 
+		 // instanciation de la localisation gps
+	     this.userLocation = new MyLocationOverlay(getApplicationContext(), mapView);
+	     
 		
 		// Ajout et l’affichage de la localisation sur la map
 		this.mapView.getOverlays().add(userLocation);
@@ -115,8 +124,9 @@ public class DisplayPlanGoogleActivity extends MapActivity
      
 	 public void onLocationChanged(Location location) {
 			if (location != null) {
-				Toast.makeText(this, "Nouvelle position : " + location.getLatitude() + ", " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "Nouvelle position : " + (float)location.getLatitude() + ", " + (float)location.getLongitude(), Toast.LENGTH_SHORT).show();
 				mc.animateTo(new GeoPoint(microdegrees(location.getLatitude()),microdegrees(location.getLongitude())));
+				mc.setZoom(17);
 			}
 	 }
  	
@@ -152,5 +162,20 @@ public class DisplayPlanGoogleActivity extends MapActivity
  	private int microdegrees(double value){
 		return (int)(value*1000000);
 	}
+ 	
+ 	public void onProviderDisabled(String provider)
+ 	 {
+ 	 // TODO Auto-generated method stub
+ 	 }
+ 	public void onProviderEnabled(String provider)
+ 	 {
+ 	 
+ 	// TODO Auto-generated method stub
+ 	 }
+ 	 
+ 	 public void onStatusChanged(String provider, int status, Bundle extras)
+ 	 {
+ 	 // TODO Auto-generated method stub
+ 	 }
  	
 }
