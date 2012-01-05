@@ -3,14 +3,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#eeeeee">
-
+    
     <ImageView
         android:id="@+id/btn_fav"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:src="@drawable/favb" />
+        android:src="@drawable/favg" />
 
     <ImageView
         android:id="@+id/btn_hor"
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/btn_fav"
-        android:src="@drawable/horb"
+        android:src="@drawable/horg"
          />
 
     <ImageView
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/plab" />
+        android:src="@drawable/plag" />
 
     <ImageView
         android:id="@+id/btn_iti"
@@ -43,15 +43,25 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/btn_pla"
-        android:src="@drawable/tarb" />
+        android:src="@drawable/targ" />
 
-    <TextView
-        android:id="@+id/textView2"
+    <ProgressBar
+        android:id="@+id/loadingBar"
+        style="@android:style/Widget.ProgressBar.Large.Inverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btn_iti"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="181dp" />
+
+    <TextView
+        android:id="@+id/loadingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/progressBar1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
-        android:text="Bienvenue sur le module de mise a jour d&apos;UrbanDroid" />
+        android:layout_marginTop="32dp"
+        android:text="@string/app_name"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

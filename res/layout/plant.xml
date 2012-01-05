@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_fav"
         android:layout_below="@+id/ongletGoogleMap"
-        android:layout_centerHorizontal="true"
+        android:adjustViewBounds="true"
         android:scaleType="matrix"
         android:src="@drawable/plantisseo" />
 

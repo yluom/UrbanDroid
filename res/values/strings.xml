@@ -2,7 +2,6 @@
 <resources>
       <string name="hello">Hello World, AndroidActivity!</string>
     <string name="app_name">UrbanDroid</string>
-    <string name="versionBdd">0</string>
     <string name="urlBdd">http://kakou-corp.fr/urb/urbdroid.bdd</string>
     <string name="urlVersionBdd">http://kakou-corp.fr/urb/version.bdd</string>
     <string name="mapKey">0TH2rWUB44zTOs1fMfnuAidE8gNLHd9VcRs7G1g</string>

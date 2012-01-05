@@ -71,7 +71,7 @@ public class DisplayPlanActivity extends Activity implements OnTouchListener {
     PointF start = new PointF();
     PointF mid = new PointF();
     float oldDist;
-    private static final String TAG = "Touch" ;
+    private static final String TAG = "Plan Tisseo Touch" ;
     static final int NONE = 0;
     static final int DRAG = 1;
     static final int ZOOM = 2;
@@ -99,6 +99,8 @@ public class DisplayPlanActivity extends Activity implements OnTouchListener {
 				savedMatrix.set(matrix);
 				start.set(event.getX(), event.getY());
 				Log.d(TAG, "mode=DRAG" );
+				Log.d(TAG, "x=" + event.getX());
+				Log.d(TAG, "y=" + event.getY());
 				mode = DRAG;
 			    break;
 			case MotionEvent.ACTION_UP:
@@ -109,7 +111,7 @@ public class DisplayPlanActivity extends Activity implements OnTouchListener {
 			case MotionEvent.ACTION_POINTER_DOWN:
 				oldDist = spacing(event);
 				Log.d(TAG, "oldDist=" + oldDist);
-				if (oldDist > 10f) 
+				if (oldDist > 100f) 
 				{
 					savedMatrix.set(matrix);
 					midPoint(mid, event);
@@ -128,7 +130,7 @@ public class DisplayPlanActivity extends Activity implements OnTouchListener {
 			   {
 		    	  float newDist = spacing(event);
 		    	  Log.d(TAG, "newDist=" + newDist);
-		    	  if (newDist > 10f) 
+		    	  if (newDist > 100f) 
 		    	  {
 		    		  matrix.set(savedMatrix);
 		    		  float scale = newDist / oldDist;
