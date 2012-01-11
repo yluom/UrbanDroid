@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.*;
+import java.lang.reflect.Method;
 import java.net.*;
 
 public class UrbanDroidActivity extends Activity {
@@ -60,8 +61,8 @@ public class UrbanDroidActivity extends Activity {
     	try
     	{
 			// Nos "pointeurs" de fichier
-			File ptrBdd = new File("/data/data/fr.android.urbandroid/files/urbdroid.bdd");
-			File ptrVersion = new File("/data/data/fr.android.urbandroid/files/bdd.version");
+			File ptrBdd = new File("/mnt/sdcard/urbandroid/urbdroid.db");
+			File ptrVersion = new File("/mnt/sdcard/urbandroid/bdd.version");
 			
 			// Nos ressources utiles
 			Resources res = getResources();
@@ -100,10 +101,16 @@ public class UrbanDroidActivity extends Activity {
     
     public void downloadNewBdd(String urlBdd, File ptrBdd, String urlVersionBdd, File ptrVersion) 
     { 
-    	// Téléchargement de la nouvelle base de donnée, ainsi que son numéro de version
-        this.download(urlBdd, ptrBdd);
-        this.download(urlVersionBdd, ptrVersion);
-        tv.setText("Base de donnée mise a jour! \nBDD Version = " + this.fileContents(ptrVersion));
+    	try {
+	    	// Téléchargement de la nouvelle base de donnée, ainsi que son numéro de version
+	        this.download(urlBdd, ptrBdd);
+	        this.download(urlVersionBdd, ptrVersion);
+        	chmod(ptrBdd, 0666);
+        	tv.setText("Base de donnée mise a jour! \nBDD Version = " + this.fileContents(ptrVersion));
+        } catch (Exception ex) {
+        	Toast.makeText(this, ex.toString(), Toast.LENGTH_LONG).show();
+        	Log.e(TAG, Log.getStackTraceString(ex));
+        }
     }
    
     public void download(String link, File f)
@@ -134,7 +141,7 @@ public class UrbanDroidActivity extends Activity {
     	}
     	catch (Exception ex)
     	{
-    		Toast.makeText(this, "2 :" + ex.toString(), 10).show();
+    		Toast.makeText(this, "2 :" + ex.toString(), Toast.LENGTH_LONG).show();
     		Log.e(TAG, Log.getStackTraceString(ex));
     	}
     }
@@ -152,7 +159,7 @@ public class UrbanDroidActivity extends Activity {
     	}
     	catch (Exception ex)
     	{
-    		Toast.makeText(this, "3 :" + ex.toString(), 10).show();
+    		Toast.makeText(this, "3 :" + ex.toString(), Toast.LENGTH_LONG).show();
     		Log.e(TAG, Log.getStackTraceString(ex));
     	}
 		return null;
@@ -176,9 +183,17 @@ public class UrbanDroidActivity extends Activity {
     	catch (Exception ex)
     	{
     		Log.e(TAG, Log.getStackTraceString(ex));
-    		Toast.makeText(this, "4 :" + ex.toString(), 10).show();
+    		Toast.makeText(this, "4 :" + ex.toString(), Toast.LENGTH_LONG).show();
     	}
     	return null;
     }
+    
+    // Utilisé pour modifier le chmod du fichier .bdd
+    public int chmod(File path, int mode) throws Exception {
+    	  Class fileUtils = Class.forName("android.os.FileUtils");
+    	  Method setPermissions =
+    	      fileUtils.getMethod("setPermissions", String.class, int.class, int.class, int.class);
+    	  return (Integer) setPermissions.invoke(null, path.getAbsolutePath(), mode, -1, -1);
+    	}
 
 }

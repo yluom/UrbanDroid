@@ -48,6 +48,6 @@
     <ImageView android:layout_height="wrap_content" android:id="@+id/ongletBus" android:src="@drawable/ongbusy" android:layout_width="wrap_content" android:layout_alignTop="@+id/ongletMetro" android:layout_centerHorizontal="true"></ImageView>
     <ImageView android:layout_height="wrap_content" android:id="@+id/ongletTram" android:src="@drawable/ongtramn" android:layout_width="wrap_content" android:layout_alignTop="@+id/ongletBus" android:layout_alignParentRight="true"></ImageView>
     <TextView android:gravity="center_vertical|center_horizontal" android:background="@drawable/bandeau" android:id="@+id/textView1" android:layout_height="wrap_content" android:text="BUS" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_below="@+id/ongletMetro" android:layout_alignParentLeft="true" android:layout_marginTop="14dp" android:textColor="#0b327f"></TextView>
-    <Spinner android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/spinner1" android:layout_below="@+id/textView1" android:layout_alignParentLeft="true" android:layout_marginTop="14dp" android:layout_alignParentRight="true"></Spinner>
+    <Spinner android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/spinnerH" android:layout_below="@+id/textView1" android:layout_alignParentLeft="true" android:layout_marginTop="14dp" android:layout_alignParentRight="true"></Spinner>
 
 </RelativeLayout>

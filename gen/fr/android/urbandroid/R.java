@@ -45,29 +45,36 @@ public final class R {
         public static final int tisseo=0x7f02001f;
     }
     public static final class id {
+        public static final int btnValider=0x7f05000d;
         public static final int btn_fav=0x7f050000;
         public static final int btn_hor=0x7f050001;
         public static final int btn_iti=0x7f050003;
         public static final int btn_pla=0x7f050002;
         public static final int btn_tar=0x7f050004;
+        public static final int checkBoxFav=0x7f05000e;
         public static final int imageView1=0x7f050005;
-        public static final int imageView6=0x7f050016;
-        public static final int loadingBar=0x7f05000d;
-        public static final int loadingText=0x7f05000e;
-        public static final int mapView=0x7f050013;
+        public static final int imageView6=0x7f05001d;
+        public static final int loadingBar=0x7f050014;
+        public static final int loadingText=0x7f050015;
+        public static final int mapView=0x7f05001a;
         public static final int ongletBus=0x7f050008;
-        public static final int ongletGoogleMap=0x7f050012;
+        public static final int ongletGoogleMap=0x7f050019;
         public static final int ongletMetro=0x7f050007;
-        public static final int ongletTisseo=0x7f050011;
+        public static final int ongletTisseo=0x7f050018;
         public static final int ongletTram=0x7f050009;
-        public static final int plantisseo=0x7f050015;
-        public static final int progressBar1=0x7f05000f;
-        public static final int spinner1=0x7f05000b;
+        public static final int plantisseo=0x7f05001c;
+        public static final int progressBar1=0x7f050016;
+        public static final int radioArr=0x7f050011;
+        public static final int radioDep=0x7f050010;
+        public static final int spinner1=0x7f050012;
+        public static final int spinner2=0x7f050013;
+        public static final int spinnerH=0x7f05000b;
         public static final int textView1=0x7f05000a;
         public static final int textView2=0x7f05000c;
+        public static final int timePicker=0x7f05000f;
         public static final int titreHoraire=0x7f050006;
-        public static final int titrePlan=0x7f050010;
-        public static final int zoom=0x7f050014;
+        public static final int titrePlan=0x7f050017;
+        public static final int zoom=0x7f05001b;
     }
     public static final class layout {
         public static final int favoris=0x7f030000;

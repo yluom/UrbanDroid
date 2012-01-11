@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#eeeeee">
+    android:background="#eeeeee" >
 
     <ImageView
         android:id="@+id/btn_fav"
@@ -18,8 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/btn_fav"
-        android:src="@drawable/horb"
-         />
+        android:src="@drawable/horb" />
 
     <ImageView
         android:id="@+id/btn_pla"
@@ -44,6 +43,77 @@
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/btn_pla"
         android:src="@drawable/tarb" />
-    <ImageView android:layout_height="wrap_content" android:id="@+id/imageView1" android:src="@drawable/banditi" android:layout_width="wrap_content" android:layout_alignParentTop="true" android:layout_alignParentLeft="true"></ImageView>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/banditi" >
+    </ImageView>
+
+    <Button
+        android:id="@+id/btnValider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_fav"
+        android:layout_alignLeft="@+id/btn_hor"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="14dp"
+        android:text="Valider" />
+
+    <CheckBox
+        android:id="@+id/checkBoxFav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/btnValider"
+        android:text="Ajouter aux favoris"
+        android:textColor="#000000" />
+
+    <TimePicker
+        android:id="@+id/timePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnValider"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="34dp" android:longClickable="true" android:soundEffectsEnabled="true"/>
+
+    <RadioButton
+        android:id="@+id/radioDep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/timePicker"
+        android:layout_alignLeft="@+id/btnValider"
+        android:text="Départ à"
+        android:textColor="#000000" />
+
+    <RadioButton
+        android:id="@+id/radioArr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/radioDep"
+        android:layout_alignBottom="@+id/radioDep"
+        android:layout_alignLeft="@+id/timePicker"
+        android:text="Arrivée à"
+        android:textColor="#000000" />
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/imageView1"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/spinner1" />
 
 </RelativeLayout>
