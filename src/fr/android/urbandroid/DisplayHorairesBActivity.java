@@ -15,18 +15,6 @@ import android.widget.TextView;
  
 public class DisplayHorairesBActivity extends Activity
 {
-	
-	
-	public Cursor fetchAllTitles(){
-		String DB_PATH = "/data/data/fr.android.urbandroid/";
-	    String DB_NAME = "urbdroid.db";
-		String myPath = DB_PATH + DB_NAME;
-		SQLiteDatabase db;
-	     db = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-		return db.query(
-		  "LIGNES", new String[]{"_id","nomligne"}, "idligne LIKE 'B%'", null, null, null, "nomligne ASC" );
-	}
-	
      public void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
      setContentView(R.layout.horairesb);
@@ -77,9 +65,8 @@ public class DisplayHorairesBActivity extends Activity
      iv8.setOnClickListener(menuSwitcher);
      
      
-     Cursor c = fetchAllTitles();
+     Cursor c = Bdd.fetchAllTitles("LIGNES", new String[]{"_id","nomligne"}, "idligne LIKE 'B%'", null, null, null, "nomligne ASC");
      startManagingCursor(c);
-      
      // Stock la colone que l'on veut afficher
      String[] from = new String[]{"nomligne"};
      // create an array of the display item we want to bind our data to

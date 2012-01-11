@@ -1,6 +1,10 @@
 package fr.android.urbandroid;
 
+import java.util.*;
 import android.content.Intent;
+import android.database.CharArrayBuffer;
+import android.database.Cursor;
+import android.graphics.*;
 import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
@@ -11,21 +15,18 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapController;
-import com.google.android.maps.MapView;
-import com.google.android.maps.MyLocationOverlay;
- 
+import com.google.android.maps.*; 
 public class DisplayPlanGoogleActivity extends MapActivity implements LocationListener
 {
 	
 	private static final String TAG = "DisplayPlanGoogleActivity";
 	private MapView mapView;
 	private MapController mc;
-	//inutile:private GeoPoint location;
 	private MyLocationOverlay userLocation = null;
 	private LocationManager lm;
+	// Utilisés pour afficher les lignes de metro.
+	private List<Overlay> mapOverlays;
+	private Projection projection; 
 	
      public void onCreate(Bundle savedInstanceState) {
 	     super.onCreate(savedInstanceState);
@@ -86,8 +87,15 @@ public class DisplayPlanGoogleActivity extends MapActivity implements LocationLi
 	    	 Log.e(TAG, Log.getStackTraceString(ex));
 	    	 Toast.makeText(this, "#6 :" + ex.getStackTrace().toString(), 10).show();
 	     }
+	     
+	     // Avant tout, on draw la ligne entre les deux points
+	     mapOverlays = this.mapView.getOverlays();        
+	     projection = mapView.getProjection();
+	     mapOverlays.add(new MyOverlay());  
+	     
 	     // On toppe le controleur (pour positionner le pt central)
 		 this.mc = this.mapView.getController();
+		 
 		 // on instancie le LocationManager qui va permettre de suivre les changement de positions
 		 lm = (LocationManager) this.getSystemService(LOCATION_SERVICE);
 		 lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, this);
@@ -100,20 +108,26 @@ public class DisplayPlanGoogleActivity extends MapActivity implements LocationLi
 		// Ajout et l’affichage de la localisation sur la map
 		this.mapView.getOverlays().add(userLocation);
 		this.userLocation.enableMyLocation();
-
+	    mc.setZoom(15);
+	    
+	    // On se place sur la ville de toulouse
+	    mc.animateTo(new GeoPoint(microdegrees((double)43.5713),microdegrees((double)1.46468)));
+	    
 		// Zoom direct sur la position de l'utilisatube
 		this.userLocation.runOnFirstFix(new Runnable() {
 		    public void run() {
 		    mc.animateTo(userLocation.getMyLocation());
-		    mc.setZoom(17);
 		    }
 		});
 		// On met la vue sattelite (sympatouche)
-		//this.mapView.setSatellite(true);
+		this.mapView.setSatellite(true);
+
 		// je sais pas
 		this.mapView.invalidate();
+		
+		
 
-     }
+     } // fin du onCreate
      
      @Override
      protected boolean isRouteDisplayed()
@@ -126,7 +140,6 @@ public class DisplayPlanGoogleActivity extends MapActivity implements LocationLi
 			if (location != null) {
 				Toast.makeText(this, "Nouvelle position : " + (float)location.getLatitude() + ", " + (float)location.getLongitude(), Toast.LENGTH_SHORT).show();
 				mc.animateTo(new GeoPoint(microdegrees(location.getLatitude()),microdegrees(location.getLongitude())));
-				mc.setZoom(17);
 			}
 	 }
  	
@@ -163,6 +176,135 @@ public class DisplayPlanGoogleActivity extends MapActivity implements LocationLi
 		return (int)(value*1000000);
 	}
  	
+ 	class MyOverlay extends Overlay{
+
+ 	    public MyOverlay(){
+
+ 	    }   
+ 	    
+ 	    
+ 	    public void draw(Canvas canvas, MapView mapv, boolean shadow){
+ 	        super.draw(canvas, mapv, shadow);
+ 	        afficherLigne("MA", Color.RED, mapv, canvas);
+ 	        afficherLigne("MB", Color.YELLOW, mapv, canvas);
+ 	        afficherLigne("B2", Color.CYAN, mapv, canvas);
+ 	        afficherLigne("B23", Color.argb(150, 142, 74, 5), mapv, canvas);
+ 	        afficherLigne("T1", Color.BLUE, mapv, canvas);
+ 	        afficherPoints(mapv, canvas, 'M', R.drawable.iconem); // on affiche pour le metro
+ 	        afficherPoints(mapv, canvas, 'B', R.drawable.iconeb); // on affiche pour les bus 
+ 	        afficherPoints(mapv, canvas, 'T', R.drawable.iconet); // on affiche pour les trams
+         
+ 	    }
+ 	    // transport = M -> metro, = B -> Bus .. etc 
+ 	    public void afficherPoints(MapView mapv, Canvas canvas, char transport, int image) {
+ 	    	
+ 	       Cursor c = Bdd.fetchAllTitles("STATIONS, DESSERT", new String[]{"DESSERT._id","longitude","latitude"}, "STATIONS._id = DESSERT.idstation AND idligne LIKE '"+transport+"%'", null, null, null, "position");
+ 	       startManagingCursor(c);
+ 	       c.moveToFirst();
+ 	       int colonneLong = c.getColumnIndex("longitude");
+           int colonneLat = c.getColumnIndex("latitude");
+           GeoPoint p;
+           if (c != null) {
+                       float lat = c.getFloat(colonneLat);
+                       float longi = c.getFloat(colonneLong);
+                       p = new GeoPoint(microdegrees(longi),microdegrees(lat));
+                     //---translate the GeoPoint to screen pixels---
+                       Point screenPts = new Point();
+                       mapView.getProjection().toPixels(p, screenPts);
+            
+                       //---add the marker---
+                       Bitmap bmp = BitmapFactory.decodeResource(getResources(), image);       
+                       canvas.drawBitmap(bmp, screenPts.x-15, screenPts.y-15, null);  
+                  
+                   while (c.moveToNext()) {
+                       /* Retrieve the values of the Entry
+                        * the Cursor is pointing to. */
+                       lat = c.getFloat(colonneLat);
+                       longi = c.getFloat(colonneLong);
+                       /* Add current Entry to results. */
+                       p = new GeoPoint(microdegrees(longi),microdegrees(lat));
+                     //---translate the GeoPoint to screen pixels---
+                       screenPts = new Point();
+                       mapView.getProjection().toPixels(p, screenPts);
+            
+                       //---add the marker---
+                       bmp = BitmapFactory.decodeResource(getResources(), image);
+                       switch(transport) {
+	                       case 'M': canvas.drawBitmap(bmp, screenPts.x-15, screenPts.y-15, null);  break;
+	                       case 'T': canvas.drawBitmap(bmp, screenPts.x, screenPts.y, null);  break;
+	                       case 'B': canvas.drawBitmap(bmp, screenPts.x+5, screenPts.y-15, null);  break;
+                       }
+                        
+                   }
+           }
+           c.close();
+           Bdd.db.close();
+           
+           //
+ 	    	 
+ 	    	   
+ 	    	
+ 	    }
+        public void afficherSegment(GeoPoint gp1, GeoPoint gp2, MapView mapv, Canvas canvas, int c)
+        {
+	        	Paint mPaint = new Paint();
+	 	        mPaint.setDither(true);
+	 	        mPaint.setColor(c);
+	 	        mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+	 	        mPaint.setStrokeJoin(Paint.Join.ROUND);
+	 	        mPaint.setStrokeCap(Paint.Cap.ROUND);
+	 	        mPaint.setStrokeWidth(5);
+	 	        
+	 	        // les deux géopoints que l'on veut relier  
+	 	        Point p1 = new Point();
+	 	        Point p2 = new Point();
+	
+	 	        Path path = new Path();
+	
+	 	        Projection projection = mapv.getProjection();
+	 	        try {
+	 	        projection.toPixels(gp1, p1);
+	 	        projection.toPixels(gp2, p2);
+	 	        } catch(Exception ex)
+	 	        {
+	 	        	
+	 	        	Log.e(TAG, Log.getStackTraceString(ex));
+	 	        }
+	 	        path.moveTo(p2.x, p2.y);
+	 	        path.lineTo(p1.x,p1.y);
+	
+	 	        canvas.drawPath(path, mPaint);
+        }
+        public void afficherLigne(String ligne, int color, MapView mapv, Canvas canvas)
+        {
+   	       Cursor c = Bdd.fetchAllTitles("STATIONS, DESSERT", new String[]{"DESSERT._id","longitude","latitude"}, "STATIONS._id = DESSERT.idstation AND idligne='" + ligne + "'", null, null, null, "position");
+ 	       startManagingCursor(c);
+ 	       c.moveToFirst();
+ 	       int colonneLong = c.getColumnIndex("longitude");
+           int colonneLat = c.getColumnIndex("latitude");
+           GeoPoint gP1=null, gP2;
+           if (c != null) {
+                       float lat = c.getFloat(colonneLat);
+                       float longi = c.getFloat(colonneLong);
+                	   gP1 = new GeoPoint(microdegrees(longi),microdegrees(lat));
+
+                  
+                   while (c.moveToNext()) {
+                       /* Retrieve the values of the Entry
+                        * the Cursor is pointing to. */
+                       float lat1 = c.getFloat(colonneLat);
+                       float long1 = c.getFloat(colonneLong);
+                       /* Add current Entry to results. */
+                       gP2 = new GeoPoint(microdegrees(long1),microdegrees(lat1));
+                       afficherSegment(gP1, gP2, mapv, canvas, color);
+                       gP1 = gP2;
+                   }
+           }
+           c.close();
+           Bdd.db.close();
+        }
+ 	}
+ 	
  	public void onProviderDisabled(String provider)
  	 {
  	 // TODO Auto-generated method stub
@@ -177,5 +319,4 @@ public class DisplayPlanGoogleActivity extends MapActivity implements LocationLi
  	 {
  	 // TODO Auto-generated method stub
  	 }
- 	
 }

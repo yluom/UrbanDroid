@@ -21,23 +21,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 public class DisplayItineraireActivity extends Activity
 {
 	
-	public Cursor fetchAllTitles(){
-		SQLiteDatabase db = null;
-		try
-		{
-			String DB_PATH = "/data/data/fr.android.urbandroid/";
-		    String DB_NAME = "urbdroid.db";
-			String myPath = DB_PATH + DB_NAME;
-		    db = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-
-		}
-		catch(Exception ex)
-		{
-			Toast.makeText(this, "BDD #1 :" + ex.toString(), Toast.LENGTH_LONG).show();
-		}
-		return db.query(
-				  "STATIONS", new String[]{"_id","nomstation"}, null, null, null, null, "nomstation ASC" );
-	}
+	
 	
      public void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
@@ -77,7 +61,7 @@ public class DisplayItineraireActivity extends Activity
      
      try
      {
-	     Cursor c = fetchAllTitles();
+	     Cursor c = Bdd.fetchAllTitles("STATIONS", new String[]{"_id","nomstation"}, null, null, null, null, "nomstation ASC" );
 	     startManagingCursor(c);
 	      
 	     // Stock la colone que l'on veut afficher
