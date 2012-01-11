@@ -4,15 +4,18 @@ import fr.android.urbandroid.*;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.util.FloatMath;
 import android.util.Log;
+import android.content.Context;
 import android.view.MotionEvent;
 
 public class DisplayPlanActivity extends Activity implements OnTouchListener {
@@ -42,7 +45,7 @@ public class DisplayPlanActivity extends Activity implements OnTouchListener {
         	  						startActivity(intent); break;
         	  	case R.id.ongletGoogleMap: intent = new Intent(DisplayPlanActivity.this, DisplayPlanGoogleActivity.class);
 					startActivity(intent); break;
-        	  	case R.id.ongletTisseo: intent = new Intent(DisplayPlanActivity.this, UrbanDroidActivity.class);
+        	  	case R.id.ongletTisseo: intent = new Intent(DisplayPlanActivity.this, DisplayPlanActivity.class);
 					startActivity(intent); break;
         	  }
           }

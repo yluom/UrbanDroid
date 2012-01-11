@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -21,13 +22,21 @@ public class DisplayItineraireActivity extends Activity
 {
 	
 	public Cursor fetchAllTitles(){
-		String DB_PATH = "/mnt/sdcard/urbandroid/";
-	    String DB_NAME = "urbdroid.db";
-		String myPath = DB_PATH + DB_NAME;
-		SQLiteDatabase db;
-	     db = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+		SQLiteDatabase db = null;
+		try
+		{
+			String DB_PATH = "/data/data/fr.android.urbandroid/";
+		    String DB_NAME = "urbdroid.db";
+			String myPath = DB_PATH + DB_NAME;
+		    db = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+
+		}
+		catch(Exception ex)
+		{
+			Toast.makeText(this, "BDD #1 :" + ex.toString(), Toast.LENGTH_LONG).show();
+		}
 		return db.query(
-		  "STATIONS", new String[]{"_id","nomstation"}, null, null, null, null, "nomstation ASC" );
+				  "STATIONS", new String[]{"_id","nomstation"}, null, null, null, null, "nomstation ASC" );
 	}
 	
      public void onCreate(Bundle savedInstanceState) {
@@ -66,23 +75,30 @@ public class DisplayItineraireActivity extends Activity
      ImageView iv5 = (ImageView) findViewById(R.id.btn_pla);
      iv5.setOnClickListener(menuSwitcher);
      
-     Cursor c = fetchAllTitles();
-     startManagingCursor(c);
-      
-     // Stock la colone que l'on veut afficher
-     String[] from = new String[]{"nomstation"};
-     // create an array of the display item we want to bind our data to
-     int[] to = new int[]{android.R.id.text1};
-     // create simple cursor adapter
-     SimpleCursorAdapter adapter =
-       new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, c, from, to );
-     adapter.setDropDownViewResource( android.R.layout.simple_spinner_item );
-     // get reference to our spinner
-     Spinner s = (Spinner) findViewById( R.id.spinner1 );
-     s.setAdapter(adapter);
-     
-     Spinner s2 = (Spinner) findViewById( R.id.spinner2 );
-     s2.setAdapter(adapter);    
+     try
+     {
+	     Cursor c = fetchAllTitles();
+	     startManagingCursor(c);
+	      
+	     // Stock la colone que l'on veut afficher
+	     String[] from = new String[]{"nomstation"};
+	     // create an array of the display item we want to bind our data to
+	     int[] to = new int[]{android.R.id.text1};
+	     // create simple cursor adapter
+	     SimpleCursorAdapter adapter =
+	       new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, c, from, to );
+	     adapter.setDropDownViewResource( android.R.layout.simple_spinner_item );
+	     // get reference to our spinner
+	     Spinner s = (Spinner) findViewById( R.id.spinner1 );
+	     s.setAdapter(adapter);
+	     
+	     Spinner s2 = (Spinner) findViewById( R.id.spinner2 );
+	     s2.setAdapter(adapter);
+     }
+		catch(Exception ex)
+		{
+			Toast.makeText(this, "BDD #2 :" + ex.toString(), Toast.LENGTH_LONG).show();
+		}
      
    }
 

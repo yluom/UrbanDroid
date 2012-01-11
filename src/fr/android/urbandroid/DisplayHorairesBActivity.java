@@ -18,7 +18,7 @@ public class DisplayHorairesBActivity extends Activity
 	
 	
 	public Cursor fetchAllTitles(){
-		String DB_PATH = "/mnt/sdcard/urbandroid/";
+		String DB_PATH = "/data/data/fr.android.urbandroid/";
 	    String DB_NAME = "urbdroid.db";
 		String myPath = DB_PATH + DB_NAME;
 		SQLiteDatabase db;

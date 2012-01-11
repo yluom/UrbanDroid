@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,8 +62,8 @@ public class UrbanDroidActivity extends Activity {
     	try
     	{
 			// Nos "pointeurs" de fichier
-			File ptrBdd = new File("/mnt/sdcard/urbandroid/urbdroid.db");
-			File ptrVersion = new File("/mnt/sdcard/urbandroid/bdd.version");
+			File ptrBdd = new File("/data/data/fr.android.urbandroid/urbdroid.db");
+			File ptrVersion = new File("/data/data/fr.android.urbandroid/bdd.version");
 			
 			// Nos ressources utiles
 			Resources res = getResources();
