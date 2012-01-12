@@ -5,4 +5,5 @@
     <string name="urlBdd">http://www.nixitup.com/urbandroid/urbdroid.db</string>
     <string name="urlVersionBdd">http://www.nixitup.com/urbandroid/version.bdd</string>
     <string name="mapKey">0I0vkBnkm-Er1R1AErHIJ6xmhNSoWbMVsbmnBdg</string>
+    <string name="profil">Veuillez choisir un profil</string>
 </resources>

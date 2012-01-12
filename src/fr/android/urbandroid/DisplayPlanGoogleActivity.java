@@ -4,9 +4,18 @@ import java.util.*;
 import android.content.Intent;
 import android.database.CharArrayBuffer;
 import android.database.Cursor;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Point;
 import android.util.Log;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -108,10 +117,10 @@ public class DisplayPlanGoogleActivity extends MapActivity implements LocationLi
 		// Ajout et l’affichage de la localisation sur la map
 		this.mapView.getOverlays().add(userLocation);
 		this.userLocation.enableMyLocation();
-	    mc.setZoom(15);
+	    mc.setZoom(13);
 	    
 	    // On se place sur la ville de toulouse
-	    mc.animateTo(new GeoPoint(microdegrees((double)43.5713),microdegrees((double)1.46468)));
+	    mc.animateTo(new GeoPoint(microdegrees((double)43.60),microdegrees((double)1.44)));
 	    
 		// Zoom direct sur la position de l'utilisatube
 		this.userLocation.runOnFirstFix(new Runnable() {
@@ -144,33 +153,24 @@ public class DisplayPlanGoogleActivity extends MapActivity implements LocationLi
 	 }
  	
 	 
-	 // Tentative de menu, a revoir (force close :/) ! (mais y'a pas mal de bon ;) )
+/*	 // Tentative de menu, a revoir (force close :/) ! (mais y'a pas mal de bon ;) )
      @Override
-     public boolean onCreateOptionsMenu(Menu menu) {        
-     	menu.add(0,100,0,"Zoom +");
-     	menu.add(0,101,0,"Zoom -");
-     	menu.add(0,102,0,"Vue Satellite");
-     	menu.add(0,103,0,"Street view");
+     public boolean onCreateOptionsMenu(Menu menu) {  
+    	 super.onCreateOptionsMenu(menu);
+   	 	MenuInflater mi = getMenuInflater();
+    	 mi.inflate(R.menu.liste_menu, menu);
          return true;
      }
      
      @Override
-     public boolean onOptionsItemSelected(MenuItem item) {
+     public boolean onMenuItemSelected(int featureId, MenuItem item) {
      	switch(item.getItemId()){
-     	case 100: mc.setZoom(mapView.getZoomLevel() + 1); break;
-     	case 101: mc.setZoom(mapView.getZoomLevel() - 1); break;
-     	case 102: mapView.setSatellite(!mapView.isSatellite()); break;
-     	case 103: mapView.setStreetView(!mapView.isStreetView()); break;
+     	case R.id.menu_carte: this.mapView.setStreetView(true); break;
+     	case R.id.menu_sat: this.mapView.setSatellite(true); break;
      	}
-     	return true;
-     }
+     	return super.onMenuItemSelected(featureId, item);
+     }*/
      
- 	@Override
- 	public boolean onPrepareOptionsMenu(Menu menu) {
- 		menu.findItem(102).setIcon(mapView.isSatellite() ?android.R.drawable.checkbox_on_background:android.R.drawable.checkbox_off_background);
- 		menu.findItem(104).setIcon(mapView.isStreetView()?android.R.drawable.checkbox_on_background:android.R.drawable.checkbox_off_background);
- 		return true;
- 	}
  	//les coordonnées sont multipliées par 1E6 car les coordonnées pour GeoPoint sont exprimées en micro-degré
  	private int microdegrees(double value){
 		return (int)(value*1000000);
@@ -185,15 +185,21 @@ public class DisplayPlanGoogleActivity extends MapActivity implements LocationLi
  	    
  	    public void draw(Canvas canvas, MapView mapv, boolean shadow){
  	        super.draw(canvas, mapv, shadow);
- 	        afficherLigne("MA", Color.RED, mapv, canvas);
- 	        afficherLigne("MB", Color.YELLOW, mapv, canvas);
- 	        afficherLigne("B2", Color.CYAN, mapv, canvas);
- 	        afficherLigne("B23", Color.argb(150, 142, 74, 5), mapv, canvas);
- 	        afficherLigne("T1", Color.BLUE, mapv, canvas);
+ 	        // cette condition limite le zoom mininum
+ 	       if (mapv.getZoomLevel() > 10)
+ 	       {
+ 	    	   	afficherLigne("MA", Color.RED, mapv, canvas); // affiche ligne A du metro
+ 	 	        afficherLigne("MB", Color.YELLOW, mapv, canvas); // ligne B
+ 	 	        afficherLigne("B2", Color.GREEN, mapv, canvas); // ligne de bus
+ 	 	        afficherLigne("B23", Color.argb(150, 142, 74, 5), mapv, canvas); //idem
+ 	 	        afficherLigne("T1", Color.BLUE, mapv, canvas); // ligne de tram
+ 	       }
+ 	       if (mapv.getZoomLevel() > 13)
+ 	       {
  	        afficherPoints(mapv, canvas, 'M', R.drawable.iconem); // on affiche pour le metro
  	        afficherPoints(mapv, canvas, 'B', R.drawable.iconeb); // on affiche pour les bus 
  	        afficherPoints(mapv, canvas, 'T', R.drawable.iconet); // on affiche pour les trams
-         
+ 	       }
  	    }
  	    // transport = M -> metro, = B -> Bus .. etc 
  	    public void afficherPoints(MapView mapv, Canvas canvas, char transport, int image) {
@@ -212,7 +218,7 @@ public class DisplayPlanGoogleActivity extends MapActivity implements LocationLi
                        Point screenPts = new Point();
                        mapView.getProjection().toPixels(p, screenPts);
             
-                       //---add the marker---
+                       // Ajout de l'icone de bus/metro/tram
                        Bitmap bmp = BitmapFactory.decodeResource(getResources(), image);       
                        canvas.drawBitmap(bmp, screenPts.x-15, screenPts.y-15, null);  
                   
@@ -240,17 +246,13 @@ public class DisplayPlanGoogleActivity extends MapActivity implements LocationLi
            c.close();
            Bdd.db.close();
            
-           //
- 	    	 
- 	    	   
- 	    	
  	    }
         public void afficherSegment(GeoPoint gp1, GeoPoint gp2, MapView mapv, Canvas canvas, int c)
         {
 	        	Paint mPaint = new Paint();
 	 	        mPaint.setDither(true);
 	 	        mPaint.setColor(c);
-	 	        mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+	 	        mPaint.setStyle(Paint.Style.STROKE);
 	 	        mPaint.setStrokeJoin(Paint.Join.ROUND);
 	 	        mPaint.setStrokeCap(Paint.Cap.ROUND);
 	 	        mPaint.setStrokeWidth(5);
