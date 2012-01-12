@@ -64,54 +64,27 @@
         android:prompt="@string/profil" />
 
     <TextView
-        android:id="@+id/tv_lib2"
+        android:id="@+id/tv_nomTarif"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_pla"
         android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/btn_hor"
-        android:text="Text2"
-android:visibility="invisible"
+        android:layout_alignRight="@+id/btn_iti"
+        android:layout_below="@+id/spi_profil"
+        android:text="Text1"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#000000" />
+        android:textColor="#000000" android:paddingLeft="20px" android:paddingTop="40px"/>
 
     <TextView
-        android:id="@+id/tv_prix2"
+        android:id="@+id/tv_prix"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tv_lib2"
-        android:layout_alignBottom="@+id/tv_lib2"
+        android:layout_above="@+id/btn_fav"
         android:layout_alignLeft="@+id/btn_hor"
         android:layout_alignParentRight="true"
-        android:text="Text4"
-        android:visibility="invisible"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#000000" />
-
-    <TextView
-        android:id="@+id/tv_lib1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tv_lib2"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="34dp"
-        android:layout_toLeftOf="@+id/btn_hor"
-        android:text="Text1"
-		android:visibility="invisible"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#000000" />
-
-    <TextView
-        android:id="@+id/tv_prix1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tv_lib1"
-        android:layout_alignBottom="@+id/tv_lib1"
-        android:layout_alignLeft="@+id/tv_prix2"
-        android:layout_alignParentRight="true"
+        android:layout_below="@+id/spi_profil"
         android:text="Text3"
-android:visibility="invisible"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#000000" />
+        android:textColor="#000000" android:gravity="center_horizontal" android:paddingTop="40px"/>
 
 </RelativeLayout>

@@ -1,50 +1,49 @@
-/**
- * 
- */
 package fr.android.urbandroid;
 
-import java.util.*;
+import java.util.TreeMap;
 
-
-/**
- * @author leo
- *
- */
-public class Ligne {
-	// Attributs
-	private String nom; // nom de la ligne... ex: A, B, T1, bus: 1, 2 , 3 .. etc
-	private TypeLigne type; // type de la ligne, ex: METRO, BUS..
-	//private ArrayList<Station> stations; // tableau des stations de la ligne
-	private Map<Station, Horaires[]> stations;
+public class Ligne 
+{
 	
+	private String nom;		// Nom de la ligne. Exemple : "B23"		
+	private String type; 	// Type de ligne. Exemple : "M" pour métro ou "B" pour bus
+	private int nbStation;	// Nombre de stations que comporte la ligne. Utile pour obtenir "l'index" du deuxième terminus.
 	
-	// Methodes
-	/**
-	 * @return the nom
-	 */
-	public String getNom() {
-		return nom;
-	}
-	/**
-	 * @param nom the nom to set
-	 */
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-	/**
-	 * @return the type
-	 */
-	public TypeLigne getType() {
-		return type;
-	}
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(TypeLigne type) {
-		this.type = type;
+	// Liste des stations triées par leur positionnement.
+	// Clé = positionnement. Ex : "1" pour un des deux terminus.
+	// Valeur = Station. Ex : new Station(43.1337, 12.42, true, "Basso Cambo")
+	private TreeMap<Integer, Station> listeStation;
+	
+	// Constructeur
+	public Ligne(String paramNom, String paramType, TreeMap<Integer, Station> paramListe)
+	{
+		 this.nom = paramNom;
+		 this.type = paramType;
+		 this.listeStation = paramListe;
+		 this.nbStation = this.listeStation.size();
 	}
 	
+	// Retourne le nom de la ligne
+	public String getNom()
+	{
+		return this.nom;
+	}
 	
+	// Retourne le type de ligne
+	public String getType()
+	{
+		return this.type;
+	}
 	
+	// Retourne la somptueuse liste de station que comporte la ligne
+	public TreeMap<Integer, Station> getListeStation()
+	{
+		return this.listeStation;
+	}
 	
+	// Retourne "l'index" du second terminus
+	public int getIndexSecondTerminus()
+	{
+		return this.nbStation;
+	}
 }

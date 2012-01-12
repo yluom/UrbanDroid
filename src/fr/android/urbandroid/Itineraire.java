@@ -1,37 +1,84 @@
-/**
- * 
- */
 package fr.android.urbandroid;
 
-/**
- * @author leo
- *
- */
-public class Itineraire  {
-	private Station st1;
-	private Station st2;
-	/**
-	 * @return the st1
-	 */
-	public Station getSt1() {
-		return st1;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.ArrayList;
+
+
+public class Itineraire  
+{
+	// Notre station de d�part.
+	private Station stationDepart;
+	// Notre station d'arriv�e.
+	private Station stationArrivee;
+	// Le fameux parcours.
+	private Station[] parcours;
+	// La liste de ligne dont fait partie la station de d�part.
+	private ArrayList<Ligne> ligneDepart;
+	private ArrayList<Ligne> ligneArrivee;
+	
+	// Constructeur.
+	public Itineraire(Station depart, Station arrivee, ArrayList<Ligne> listeLigneDepart, ArrayList<Ligne> listeLigneArrivee)
+	{
+		this.stationArrivee = arrivee;
+		this.stationDepart = depart;
+		this.parcours = null;
+		this.ligneArrivee = listeLigneArrivee;
+		this.ligneDepart = listeLigneDepart;
 	}
-	/**
-	 * @param st1 the st1 to set
-	 */
-	public void setSt1(Station st1) {
-		this.st1 = st1;
+
+	// Retourne la station de d�part.
+	public Station getStationDepart()
+	{
+		return this.stationDepart;
 	}
-	/**
-	 * @return the st2
-	 */
-	public Station getSt2() {
-		return st2;
+	
+	// Retourne la station d'arriv�e.
+	public Station getStationArrivee()
+	{
+		return this.stationArrivee;
 	}
-	/**
-	 * @param st2 the st2 to set
-	 */
-	public void setSt2(Station st2) {
-		this.st2 = st2;
+	
+	// Retourne le parcours.
+	public Station[] getParcours()
+	{
+		return this.parcours;
 	}
+	
+	// Retourne le nom de la ligne en commun aux deux stations.
+	// Sinon retourne null.
+	private String verifLigne(Station a, Station b)
+	{
+		Set<String> listeLigneA = a.listeLigne().keySet();
+		Set<String> listeLigneB = b.listeLigne().keySet();
+		Iterator<String> itA = listeLigneA.iterator();
+		Iterator<String> itB;
+		String buffer;
+		while (itA.hasNext())
+		{
+			buffer = itA.next();
+			itB = listeLigneB.iterator();
+			while(itB.hasNext())
+			{
+				if (buffer == itB.next())
+					return buffer;
+			}
+		}
+		return null;
+	}
+	
+	// Retourne la liste de station d'une ligne.
+	private TreeMap<Integer, Station> listeStation(Ligne ligne)
+	{
+		return ligne.getListeStation();	
+	}
+	
+	// Retourne la liste de ligne d'une station.
+	private HashMap<String, Boolean> listeLigne(Station station)
+	{
+		return station.listeLigne();
+	}
+	
 }

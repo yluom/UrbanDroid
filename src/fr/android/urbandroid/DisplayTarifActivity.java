@@ -12,6 +12,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.os.Bundle;
 import android.widget.TextView;
  
@@ -59,6 +60,7 @@ public class DisplayTarifActivity extends Activity
 
      // Stock la colone que l'on veut afficher
      String[] from = new String[]{"libelleprofil"};
+     
      // create an array of the display item we want to bind our data to
      int[] to = new int[]{android.R.id.text1};
      // create simple cursor adapter
@@ -69,43 +71,43 @@ public class DisplayTarifActivity extends Activity
      s.setAdapter(adapter);
      Bdd.db.close();
      
-	 final TextView tv_lib1 = (TextView) findViewById(R.id.tv_lib1);
-	 final TextView tv_lib2 = (TextView) findViewById(R.id.tv_lib2);
-	 final TextView tv_prix1= (TextView) findViewById(R.id.tv_prix1);
-	 final TextView tv_prix2 = (TextView) findViewById(R.id.tv_prix2);
-      
+	 final TextView tv_nomTarif = (TextView) findViewById(R.id.tv_nomTarif);
+	 final TextView tv_prix= (TextView) findViewById(R.id.tv_prix);
+	 //Toast.makeText(this, s.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
+	
+	 
+	 
+	
      s.setOnItemSelectedListener(new OnItemSelectedListener() {
     			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-    				String libProfil = s.getSelectedItem().toString();
-    				Cursor c = Bdd.fetchAllTitles("TARIFS, PROFIL", new String[]{"_id","nomtarif","prix"}, "tarifs.idprofil=profil.idprofil AND libelleprofil="+libProfil, null, null, null, null);
-    			     startManagingCursor(c);
-    			     
-    			     c.moveToFirst();
-    			     if(c.getCount()==0)
-	    			 {} else {
-	   			    	
-	
-	    			     int indexNoms = c.getColumnIndex("nomtarifs");
-	    			     int indexTarifs = c.getColumnIndex("prix");
-	    			     if(c != null && c.getCount() != 0)
-	    			     {
-	    			    	 String nomTarif = c.getString(indexNoms);
-	    			    	 int tarifs = c.getInt(indexTarifs);
-	    			    	 tv_lib1.setText(nomTarif);
-	    			    	 tv_prix1.setText(tarifs);
-	    			    	 c.moveToNext();
-	    			    	 nomTarif = c.getString(indexNoms);
-	    			    	 tarifs = c.getInt(indexTarifs);
-	    			    	 tv_lib2.setText(nomTarif);
-	    			    	 tv_prix2.setText(tarifs);
-	    			     }
-	    			     tv_lib1.setVisibility(0);
-	    			     tv_lib2.setVisibility(0);
-	    			     tv_prix1.setVisibility(0);
-	    			     tv_prix2.setVisibility(0);
-	    			     c.close();
-	    			     Bdd.db.close();
+    				Cursor item = (Cursor)(s.getSelectedItem());
+    				String spinnerString = item.getString(item.getColumnIndex("libelleprofil"));
+    			//	tv_nomTarif.setText(spinnerString);
+    				Bdd bdd = new Bdd();
+    				Cursor c2 = bdd.getCursor("TARIFS, PROFIL", new String[]{"PROFIL._id","nomtarif","prix"}, "TARIFS.idprofil=PROFIL.idprofil AND libelleprofil='"+spinnerString+"'", null, null, null, null);
+    			    startManagingCursor(c2);
+    			    c2.moveToFirst();
+    			    int indexNoms = c2.getColumnIndex("nomtarif");
+   			     	int indexTarifs = c2.getColumnIndex("prix");
+    			    if(c2 != null && c2.getCount()!=0){
+    			    	 String nomTarif = c2.getString(indexNoms);
+    			    	 int tarifs = c2.getInt(indexTarifs);
+    			    	 //Premiere ligne donc pas de récupération, pas de retour a la ligne
+    			    	 tv_nomTarif.setText(nomTarif);
+    			    	 tv_prix.setText(""+tarifs+"€");
+    			    	  while(c2.moveToNext()){
+    			    		 nomTarif = c2.getString(indexNoms);
+        			    	 tarifs = c2.getInt(indexTarifs);
+        			    	 //Lignes suivantes donc concaténation et retour à la ligne
+        			    	 tv_nomTarif.setText(tv_nomTarif.getText()+"\n"+nomTarif);
+        			    	 tv_prix.setText(tv_prix.getText()+"\n"+tarifs+"€");
+    			    	  }
+	    			     tv_nomTarif.setVisibility(0);
+	    			     tv_prix.setVisibility(0);
+	    			    
     			     }
+    			     c2.close();
+    			     bdd.closeDb();
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
