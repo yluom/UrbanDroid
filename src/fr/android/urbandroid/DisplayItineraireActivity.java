@@ -1,5 +1,6 @@
 package fr.android.urbandroid;
  
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -83,30 +84,41 @@ public class DisplayItineraireActivity extends Activity
 	     
 	     Spinner s2 = (Spinner) findViewById( R.id.spinner2 );
 	     s2.setAdapter(adapter);
-
 	     Bdd.db.close();
 	     
-	     Ligne ligneA = nouvelleLigne("MA");
-	     Set<Integer> listeLigneA = ligneA.getListeStation().keySet();
-	     /*Iterator<Integer> it = listeLigneA.iterator();
-	     while(it.hasNext())
-	     {
-	    	 if ()
-	     }*/
-	     //Toast.makeText(this, res, Toast.LENGTH_LONG).show();
-	     
-	     Station maStation = new Station(14F, 12F, "Ramonville", listerTerminus(1));
-	     Set<String> listeLigne = maStation.listeLigne().keySet();
-	     Iterator<String> it = listeLigne.iterator();
+	     /*
+	      * CODE DE L'ITINERAIRE - I LOVE BELLMAN FORD
+	      */
+	     Ligne testLigne = nouvelleLigne("MA");
+	     Station depart = testLigne.getListeStation().get(1);
+	     Station arrivee = testLigne.getListeStation().get(5);
+	     //Toast.makeText(this, "Nom station départ = " + depart.getNom(), Toast.LENGTH_LONG).show();
+	     ArrayList<Ligne> listeLigneDepart = new ArrayList<Ligne>();
+	     ArrayList<Ligne> listeLigneArrivee = new ArrayList<Ligne>();
+	    
+	     Set<String> setLigne = depart.listeLigne().keySet();
+	     Iterator<String> it = setLigne.iterator();
 	     String buffer;
 	     while (it.hasNext())
 	     {
 	    	 buffer = it.next();
-	    	 if (maStation.listeLigne().get(buffer))
-	    		 Toast.makeText(this, "Ramonville est un terminus de la ligne " + buffer + ".", Toast.LENGTH_LONG).show();
-	    	 else
-	    		 Toast.makeText(this, "Ramonville n'est pas un terminus de la ligne " + buffer + ".", Toast.LENGTH_LONG).show();
+	    	 listeLigneDepart.add(nouvelleLigne(buffer));
+	    	 //Toast.makeText(this, "Ligne (départ) add = " + buffer, Toast.LENGTH_LONG).show();
 	     }
+	     
+	     Set<String> setLigne2 = arrivee.listeLigne().keySet();
+	     Iterator<String> it2 = setLigne2.iterator();
+	     buffer = "";
+	     while (it2.hasNext())
+	     {
+	    	 buffer = it2.next();
+	    	 listeLigneArrivee.add(nouvelleLigne(buffer));
+	    	 //Toast.makeText(this, "Ligne (arrivée) add = " + buffer, Toast.LENGTH_LONG).show();
+	     }
+	     
+	     Itineraire iti = new Itineraire(depart, arrivee, listeLigneArrivee, listeLigneDepart);
+	     iti.calculerItineraire();
+	     Toast.makeText(this, "Résultat itinéraire = \n" + iti.toString(), Toast.LENGTH_LONG).show();
 	     
      }
 		catch(Exception ex)
@@ -203,7 +215,46 @@ public class DisplayItineraireActivity extends Activity
  		//Création de la HashMap vierge
  		HashMap<String, Boolean> listeLigne = new HashMap<String, Boolean>();
  		
+ 		
+ 		//Initialisation à false de la HashMap
  		Bdd bdd = new Bdd();
+ 		// Requête permettant d'obtenir tous les terminus = 1		(les premiers de la ligne)		SELECT idligne FROM DESSERT WHERE idstation=1 AND position = 1
+ 		Cursor cInit = bdd.getCursor("DESSERT", 	//FROM
+ 				new String[]{"idligne", "_id"},  //SELECT
+ 				"idstation="+idStation, //WHERE
+ 				null,
+ 				null, 
+ 				null, 
+ 				null );
+ 		startManagingCursor(cInit);
+ 	    cInit.moveToFirst();
+ 	    
+ 	    //Recupère l'index de la colone nomligne
+ 	    int colonneNomLigne = cInit.getColumnIndex("idligne");
+ 	    
+ 	    //Verification que la requête retourne qqch
+ 	    if (cInit != null && cInit.getCount() != 0) {
+ 	    	
+ 	    	//Première ligne de résultat
+ 	    	String nomLigne = cInit.getString(colonneNomLigne);
+ 	    	listeLigne.put(nomLigne, false);
+ 	    	while (cInit.moveToNext()) {
+ 	    		 
+ 	    		 //Ajoute à la map listeLigne les autres résultats
+ 	    		nomLigne = cInit.getString(colonneNomLigne);
+ 	 	    	listeLigne.put(nomLigne, false);
+ 		     }
+ 		}
+ 	    
+ 	    // Fin de if (c != null) = Fermeture de c
+ 	    //c.close();
+ 	    // Fermer la bdd
+ 	    bdd.closeDb();
+ 		
+ 		
+ 		
+ 		
+ 		bdd = new Bdd();
  		// Requête permettant d'obtenir tous les terminus = 1		(les premiers de la ligne)		SELECT idligne FROM DESSERT WHERE idstation=1 AND position = 1
  		Cursor c = bdd.getCursor("DESSERT", 	//FROM
  				new String[]{"idligne", "_id"},  //SELECT
@@ -216,7 +267,7 @@ public class DisplayItineraireActivity extends Activity
  	    c.moveToFirst();
  	    
  	    //Recupère l'index de la colone nomligne
- 	    int colonneNomLigne = c.getColumnIndex("idligne");
+ 	    colonneNomLigne = c.getColumnIndex("idligne");
  	    
  	    //Verification que la requête retourne qqch
  	    if (c != null && c.getCount() != 0) {

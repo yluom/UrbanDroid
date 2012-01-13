@@ -1,5 +1,7 @@
 package fr.android.urbandroid;
 
+import java.util.Iterator;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class Ligne 
@@ -45,5 +47,26 @@ public class Ligne
 	public int getIndexSecondTerminus()
 	{
 		return this.nbStation;
+	}
+	
+	// Retourne l'id d'une station passée en paramètre.
+	// Si la station n'est pas sur la ligne, retourne -1.
+	public int getIdStation(Station station)
+	{
+		Set<Integer> setStation = this.listeStation.keySet();
+		Iterator<Integer> it = setStation.iterator();
+		int buffer;
+		while (it.hasNext())
+		{
+			buffer = it.next();
+			if (station.getNom() == this.listeStation.get(buffer).getNom())
+				return buffer;
+		}
+		return -1;	
+	}
+	
+	public Station getStation(int position)
+	{
+		return this.listeStation.get(position);
 	}
 }

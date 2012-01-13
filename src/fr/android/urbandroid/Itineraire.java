@@ -9,47 +9,47 @@ import java.util.ArrayList;
 
 public class Itineraire  
 {
-	// Notre station de dï¿½part.
-	private Station stationDepart;
-	// Notre station d'arrivï¿½e.
-	private Station stationArrivee;
+	// Notre station de départ.
+	private Station stationDépart;
+	// Notre station d'arrivée.
+	private Station stationArrivée;
 	// Le fameux parcours.
-	private Station[] parcours;
-	// La liste de ligne dont fait partie la station de dï¿½part.
-	private ArrayList<Ligne> ligneDepart;
-	private ArrayList<Ligne> ligneArrivee;
+	private StringBuffer parcours;
+	// La liste de ligne dont fait partie la station de départ.
+	private ArrayList<Ligne> ligneDépart = new ArrayList<Ligne>();
+	// La liste de ligne dont fait partie la station d'arrivée.
+	private ArrayList<Ligne> ligneArrivée = new ArrayList<Ligne>();
 	
 	// Constructeur.
-	public Itineraire(Station depart, Station arrivee, ArrayList<Ligne> listeLigneDepart, ArrayList<Ligne> listeLigneArrivee)
+	public Itineraire(Station départ, Station arrivée, ArrayList<Ligne> listeLigneDépart, ArrayList<Ligne> listeLigneArrivée)
 	{
-		this.stationArrivee = arrivee;
-		this.stationDepart = depart;
-		this.parcours = null;
-		this.ligneArrivee = listeLigneArrivee;
-		this.ligneDepart = listeLigneDepart;
+		this.stationArrivée = arrivée;
+		this.stationDépart = départ;
+		this.parcours = new StringBuffer("");
+		this.ligneArrivée = listeLigneArrivée;
+		this.ligneDépart = listeLigneDépart;
 	}
 
-	// Retourne la station de dï¿½part.
-	public Station getStationDepart()
+	// Retourne la station de départ.
+	public Station getStationDépart()
 	{
-		return this.stationDepart;
+		return this.stationDépart;
 	}
 	
-	// Retourne la station d'arrivï¿½e.
-	public Station getStationArrivee()
+	// Retourne la station d'arrivée.
+	public Station getStationArrivée()
 	{
-		return this.stationArrivee;
+		return this.stationArrivée;
 	}
 	
-	// Retourne le parcours.
-	public Station[] getParcours()
+	public String toString()
 	{
-		return this.parcours;
+		return this.parcours.toString();
 	}
 	
 	// Retourne le nom de la ligne en commun aux deux stations.
 	// Sinon retourne null.
-	private String verifLigne(Station a, Station b)
+	private String vérifLigne(Station a, Station b)
 	{
 		Set<String> listeLigneA = a.listeLigne().keySet();
 		Set<String> listeLigneB = b.listeLigne().keySet();
@@ -69,6 +69,19 @@ public class Itineraire
 		return null;
 	}
 	
+	private String vérifLigne()
+	{
+		for (Ligne l1 : this.ligneArrivée)
+		{
+			for (Ligne l2 : this.ligneDépart)
+			{
+				if (l1.getNom() == l2.getNom())
+					return l1.getNom();
+			}
+		}
+		return "MA";
+	}
+	
 	// Retourne la liste de station d'une ligne.
 	private TreeMap<Integer, Station> listeStation(Ligne ligne)
 	{
@@ -81,4 +94,50 @@ public class Itineraire
 		return station.listeLigne();
 	}
 	
+	public void calculerItineraire()
+	{
+		/*
+		si (this.stationDepart.getLigne() == this.stationArrivee.getLigne())
+			parcours.ajouter("Prendre la station " + this.stationDepart);
+		si (this.stationDepart.getPosition() < this.stationArrivee.getPosition())
+			parcours.ajouter(" direction " + this.station.Depart.getLigne().getDernierTerminus() + ".\n");
+		sinon
+			parcours.ajouter(" direction " + this.station.Depart.getLigne().getPremierTerminus() + ".\n");
+		finsi;
+			parcours.ajouter("S'arretter à la station " + this.station.Arrivee.getNom() + ".\n");
+		finsi;
+		 */
+		if (this.vérifLigne() != null)
+		{
+			Ligne l = this.getLigne(/*this.vérifLigne()*/"MA");
+			String terminus1 = l.getListeStation().get(1).getNom();
+			String terminus2 = l.getListeStation().get(l.getIndexSecondTerminus()).getNom();
+					
+			this.parcours.append("Prendre la station " + this.stationDépart.getNom());
+			if (l.getIdStation(this.stationDépart)
+					<
+				l.getIdStation(this.stationArrivée))
+				this.parcours.append(" direction " + terminus2 + ".\n");
+			else if (l.getIdStation(this.stationDépart)
+					>
+					l.getIdStation(this.stationArrivée))
+				this.parcours.append(" direction " + terminus1 + ".\n");
+			this.parcours.append("Descendre à " + this.stationArrivée.getNom() + ".\n");
+		}
+	}
+	
+	private Ligne getLigne(String nomLigne)
+	{
+		for (Ligne l : this.ligneArrivée)
+		{
+			if (l.getNom() == nomLigne)
+				return l;
+		}
+		for (Ligne l2 : this.ligneDépart)
+		{
+			if (l2.getNom() == nomLigne)
+				return l2;
+		}
+		return null;
+	}
 }
