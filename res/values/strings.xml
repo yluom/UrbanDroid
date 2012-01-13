@@ -6,4 +6,5 @@
     <string name="urlVersionBdd">http://www.nixitup.com/urbandroid/version.bdd</string>
     <string name="mapKey">0I0vkBnkm-Er1R1AErHIJ6xmhNSoWbMVsbmnBdg</string>
     <string name="profil">Veuillez choisir un profil</string>
+    <string name="textHoraireMetro">-&gt; 1 min 20 en heure de pointe durant la semaine hors vacances scolaires\n-&gt; 4 min en soirée le vendredi et le samedi\n-&gt; 5 min en heure creuse durant la semaine\n-&gt; 7 min en soirée durant la semaine, en heure creuse le dimanche et les jours fériés\n-&gt; 9 min en début de service</string>
 </resources>

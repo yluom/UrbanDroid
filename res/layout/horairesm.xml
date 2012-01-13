@@ -48,6 +48,50 @@
     <ImageView android:layout_height="wrap_content" android:src="@drawable/ongtramn" android:layout_width="wrap_content" android:layout_below="@+id/imageView1" android:layout_alignParentRight="true" android:id="@+id/ongletTram"></ImageView>
     <ImageView android:layout_height="wrap_content" android:id="@+id/ongletBus" android:src="@drawable/ongbusn" android:layout_width="wrap_content" android:layout_alignTop="@+id/ongletTram" android:layout_toLeftOf="@+id/ongletTram"></ImageView>
     <TextView android:gravity="center_vertical|center_horizontal" android:background="@drawable/bandeau" android:id="@+id/textView1" android:layout_height="wrap_content" android:text="Métro lignes A et B" android:textColor="#0b327f" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_below="@+id/ongletMetro" android:layout_alignParentLeft="true" android:layout_marginTop="14dp"></TextView>
-    <TextView android:id="@+id/textView2" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_below="@+id/textView1" android:layout_marginTop="68dp" android:text="Premier départ : 5h15  Dernier départ : 0h du dimanche au jeudi 1h le vendredi et le samedi Temps d'attente maximum : ..................." android:textColor="#000000" android:textSize="10pt"></TextView>
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="18dp"
+        android:text="Horaires de fonctionnement :"
+        android:textSize="9pt"
+        android:textColor="#000000" android:paddingLeft="10px"/>
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="14dp"
+        android:text="Premiers départs de chaque terminus : 5h15
+Derniers départs: 0h du dimanche au jeudi, 1h le vendredi et le samedi"
+		android:textColor="#000000"
+		android:textSize="6pt" android:paddingLeft="10px"/>
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView4"
+        android:layout_marginTop="10dp"
+        android:text="Temps d&apos;attente maximum :"
+        android:textColor="#000000"
+        android:textSize="9pt" android:paddingLeft="10px"/>
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView6"
+        android:layout_marginTop="14dp"
+        android:paddingLeft="10dp"
+        android:textColor="#000000"
+        android:textSize="6pt"
+        android:text="@string/textHoraireMetro"  />
 </RelativeLayout>
