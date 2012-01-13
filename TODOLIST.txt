@@ -2,9 +2,9 @@
 -> Finir Cahier de bord 
 -> Layout de l'affichage d'un itineraire (prendreligne machin, direction machin) / Algo itineraires
 -> Affichage des prochains horaires bus (need bdd sans accents)
+-> Horaires de tramm (on fait comment alors?)
 -> Interface favoris:
       -> faire les classes java
       -> Faire la layout
 -> Livrables
 -> layout du telechargement de la bdd
--
