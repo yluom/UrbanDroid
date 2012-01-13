@@ -7,11 +7,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.*;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemSelectedListener;
  
 public class DisplayHorairesBActivity extends Activity
 {
@@ -72,12 +74,60 @@ public class DisplayHorairesBActivity extends Activity
      // create an array of the display item we want to bind our data to
      int[] to = new int[]{android.R.id.text1};
      // create simple cursor adapter
-     SimpleCursorAdapter adapter =
-       new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, c, from, to );
+     SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, c, from, to );
      adapter.setDropDownViewResource( android.R.layout.simple_spinner_item );
      // get reference to our spinner
-     Spinner s = (Spinner) findViewById( R.id.spinnerH );
-     s.setAdapter(adapter);
+     final Spinner spiLigne = (Spinner) findViewById( R.id.spinnerLigne );
+     spiLigne.setAdapter(adapter);
+     c.close();
+     Bdd.db.close();
+     
+     
+     spiLigne.setOnItemSelectedListener(new OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> parent, View arg1, int arg2, long arg3) {
+				Cursor item = (Cursor)(spiLigne.getSelectedItem());
+				String spinnerString = item.getString(item.getColumnIndex("libelleprofil"));
+				Bdd bdd = new Bdd();
+				Cursor c2 = bdd.getCursor("STATIONS, DESSERT, LIGNES", new String[]{"STATIONS._id","nomstation"}, "DESSERT.idstation=STATIONS.idstation AND DESSERT.idligne=LIGNES.idlignes AND nomligne ='"+spinnerString+"'", null, null, null, "position asc");
+			    startManagingCursor(c2);
+			    //
+			    
+			     // Stock la colonne que l'on veut afficher
+			     String[] from = new String[]{"nomstation"};
+			     // create an array of the display item we want to bind our data to
+			     int[] to = new int[]{android.R.id.text1};
+			     // create simple cursor adapter
+			     SimpleCursorAdapter adapter = new SimpleCursorAdapter(parent.getContext(), android.R.layout.simple_spinner_item, c2, from, to );
+			     adapter.setDropDownViewResource( android.R.layout.simple_spinner_item );
+			     // get reference to our spinner
+			     final Spinner spiStation = (Spinner) findViewById( R.id.spinnerStation );
+			     spiStation.setAdapter(adapter);
+			    
+			    
+			    //
+			    
+			    
+			    
+			    
+			    
+			    
+			    
+			    
+			    
+			    
+			    
+			    
+			
+			     c2.close();
+			     bdd.closeDb();
+		}
+
+		public void onNothingSelected(AdapterView<?> arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+	});
      
    }
 }

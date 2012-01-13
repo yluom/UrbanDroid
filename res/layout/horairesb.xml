@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#eeeeee">
+    android:background="#eeeeee" >
 
     <ImageView
         android:id="@+id/btn_fav"
@@ -43,11 +43,103 @@
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/btn_pla"
         android:src="@drawable/tarb" />
-   <ImageView android:layout_height="wrap_content" android:id="@+id/titreHoraire" android:src="@drawable/bandhor" android:layout_width="wrap_content" android:layout_alignParentTop="true" android:layout_alignParentLeft="true"></ImageView>
-    <ImageView android:layout_height="wrap_content" android:id="@+id/ongletMetro" android:src="@drawable/ongmetron" android:layout_width="wrap_content" android:layout_below="@+id/titreHoraire" android:layout_alignParentLeft="true"></ImageView>
-    <ImageView android:layout_height="wrap_content" android:id="@+id/ongletBus" android:src="@drawable/ongbusy" android:layout_width="wrap_content" android:layout_alignTop="@+id/ongletMetro" android:layout_centerHorizontal="true"></ImageView>
-    <ImageView android:layout_height="wrap_content" android:id="@+id/ongletTram" android:src="@drawable/ongtramn" android:layout_width="wrap_content" android:layout_alignTop="@+id/ongletBus" android:layout_alignParentRight="true"></ImageView>
-    <TextView android:gravity="center_vertical|center_horizontal" android:background="@drawable/bandeau" android:id="@+id/textView1" android:layout_height="wrap_content" android:text="BUS" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_below="@+id/ongletMetro" android:layout_alignParentLeft="true" android:layout_marginTop="14dp" android:textColor="#0b327f"></TextView>
-    <Spinner android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/spinnerH" android:layout_below="@+id/textView1" android:layout_alignParentLeft="true" android:layout_marginTop="14dp" android:layout_alignParentRight="true"></Spinner>
+
+    <ImageView
+        android:id="@+id/titreHoraire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/bandhor" >
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/ongletMetro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/titreHoraire"
+        android:src="@drawable/ongmetron" >
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/ongletBus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ongletMetro"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ongbusy" >
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/ongletTram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/ongletBus"
+        android:src="@drawable/ongtramn" >
+    </ImageView>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ongletMetro"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bandeau"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="BUS"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#0b327f" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textView1"
+        android:paddingLeft="10dp"
+        android:text="Veuillez choisir une ligne, un arrêt et un horaire"
+        android:textColor="#000000"
+        android:textSize="6pt" android:layout_marginTop="10dp"/>
+
+    <Spinner
+        android:id="@+id/spinnerLigne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="17dp" />
+
+    <Spinner
+        android:id="@+id/spinnerStation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/spinnerLigne"
+        android:layout_marginTop="14dp" />
+
+    <TimePicker
+        android:id="@+id/timePicker1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/spinnerStation"
+        android:layout_marginTop="19dp" />
+
+    <Button
+        android:id="@+id/btn_valider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/timePicker1"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="14dp"
+        android:text="Valider" />
 
 </RelativeLayout>

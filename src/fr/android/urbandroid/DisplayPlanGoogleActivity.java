@@ -99,7 +99,7 @@ public class DisplayPlanGoogleActivity extends MapActivity implements LocationLi
 	     
 	     // Avant tout, on draw la ligne entre les deux points
 	     mapOverlays = this.mapView.getOverlays();        
-	     projection = mapView.getProjection();
+	    this.projection = mapView.getProjection();
 	     mapOverlays.add(new MyOverlay());  
 	     
 	     // On toppe le controleur (pour positionner le pt central)
