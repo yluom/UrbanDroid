@@ -188,10 +188,11 @@ public class DisplayPlanGoogleActivity extends MapActivity implements LocationLi
  	        // cette condition limite le zoom mininum
  	       if (mapv.getZoomLevel() > 10)
  	       {
+ 	    	   // TODO: POUR chaque ligne, afficherLIgne();
  	    	   	afficherLigne("MA", Color.RED, mapv, canvas); // affiche ligne A du metro
  	 	        afficherLigne("MB", Color.YELLOW, mapv, canvas); // ligne B
  	 	        afficherLigne("B2", Color.GREEN, mapv, canvas); // ligne de bus
- 	 	        afficherLigne("B23", Color.argb(150, 142, 74, 5), mapv, canvas); //idem
+ 	 	        //afficherLigne("B23", Color.argb(150, 142, 74, 5), mapv, canvas); // cette ligne n'existe plus dans notre bdd
  	 	        afficherLigne("T1", Color.BLUE, mapv, canvas); // ligne de tram
  	       }
  	       if (mapv.getZoomLevel() > 13)
