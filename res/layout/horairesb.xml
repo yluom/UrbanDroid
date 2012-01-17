@@ -81,6 +81,15 @@
     </ImageView>
 
     <TextView
+        android:id="@+id/tv_horaires"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_hor"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/spinnerStation"
+        android:layout_marginTop="19dp" />
+
+    <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -101,10 +110,11 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/textView1"
+        android:layout_marginTop="10dp"
         android:paddingLeft="10dp"
         android:text="Veuillez choisir une ligne, un arrêt et un horaire"
         android:textColor="#000000"
-        android:textSize="6pt" android:layout_marginTop="10dp"/>
+        android:textSize="6pt" />
 
     <Spinner
         android:id="@+id/spinnerLigne"
@@ -124,22 +134,25 @@
         android:layout_below="@+id/spinnerLigne"
         android:layout_marginTop="14dp" />
 
-    <TimePicker
-        android:id="@+id/timePicker1"
+    <TextView
+        android:id="@+id/tv_hor1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_below="@+id/spinnerStation"
-        android:layout_marginTop="19dp" />
+        android:layout_centerHorizontal="true"
+        android:text="Prochains passages :"
+        android:textColor="#000000" android:textSize="8pt"/>
 
-    <Button
-        android:id="@+id/btn_valider"
+    <TextView
+        android:id="@+id/tv_horaires"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/timePicker1"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="30dp"
-        android:layout_marginRight="14dp"
-        android:text="Valider" />
+        android:layout_alignBottom="@+id/tv_horaires"
+        android:layout_below="@+id/tv_hor1"
+        android:layout_marginTop="28dp"
+        android:layout_toLeftOf="@+id/btn_fav"
+        android:layout_toRightOf="@+id/btn_pla"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" android:textSize="8pt" android:textColor="#000000" android:visibility="invisible"/>
 
 </RelativeLayout>

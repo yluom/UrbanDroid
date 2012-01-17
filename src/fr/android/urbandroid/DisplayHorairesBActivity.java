@@ -1,10 +1,15 @@
 package fr.android.urbandroid;
  
+import java.text.DateFormat;
+import java.util.Date;
+
 import fr.android.urbandroid.*;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.format.Time;
+import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -17,6 +22,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
  
 public class DisplayHorairesBActivity extends Activity
 {
+	private static final String TAG = "UrbanDroidActivity";
      public void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
      setContentView(R.layout.horairesb);
@@ -78,52 +84,85 @@ public class DisplayHorairesBActivity extends Activity
      adapter.setDropDownViewResource( android.R.layout.simple_spinner_item );
      // get reference to our spinner
      final Spinner spiLigne = (Spinner) findViewById( R.id.spinnerLigne );
-     spiLigne.setAdapter(adapter);
-     c.close();
+     final Spinner spiStation = (Spinner) findViewById( R.id.spinnerStation );
+     spiLigne.setAdapter(adapter); 
      Bdd.db.close();
      
-     
+
      spiLigne.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View arg1, int arg2, long arg3) {
-				Cursor item = (Cursor)(spiLigne.getSelectedItem());
-				String spinnerString = item.getString(item.getColumnIndex("libelleprofil"));
-				Bdd bdd = new Bdd();
-				Cursor c2 = bdd.getCursor("STATIONS, DESSERT, LIGNES", new String[]{"STATIONS._id","nomstation"}, "DESSERT.idstation=STATIONS.idstation AND DESSERT.idligne=LIGNES.idlignes AND nomligne ='"+spinnerString+"'", null, null, null, "position asc");
-			    startManagingCursor(c2);
-			    //
-			    
-			     // Stock la colonne que l'on veut afficher
-			     String[] from = new String[]{"nomstation"};
-			     // create an array of the display item we want to bind our data to
-			     int[] to = new int[]{android.R.id.text1};
-			     // create simple cursor adapter
-			     SimpleCursorAdapter adapter = new SimpleCursorAdapter(parent.getContext(), android.R.layout.simple_spinner_item, c2, from, to );
-			     adapter.setDropDownViewResource( android.R.layout.simple_spinner_item );
-			     // get reference to our spinner
-			     final Spinner spiStation = (Spinner) findViewById( R.id.spinnerStation );
-			     spiStation.setAdapter(adapter);
-			    
-			    
-			    //
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
-			    
+			     try {
+					    Cursor item = (Cursor)(spiLigne.getSelectedItem());
+						String spinnerString = item.getString(item.getColumnIndex("nomligne"));
+						Bdd bdd = new Bdd();
+						Cursor c2 = bdd.getCursor("STATIONS, DESSERT, LIGNES, HORAIRES", new String[]{"distinct STATIONS._id","nomstation"}, "DESSERT.idstation=STATIONS._id AND DESSERT.idligne=LIGNES.idligne AND HORAIRES.idstation=STATIONS._id AND nomligne ='"+spinnerString+"'", null, null, null, "position asc");
+					    startManagingCursor(c2);
+					     // Stock la colonne que l'on veut afficher
+					     String[] from = new String[]{"nomstation"};
+					     // create an array of the display item we want to bind our data to
+					     int[] to = new int[]{android.R.id.text1};
+					     // create simple cursor adapter
+					     SimpleCursorAdapter adapter = new SimpleCursorAdapter(parent.getContext(), android.R.layout.simple_spinner_item, c2, from, to );
+					     adapter.setDropDownViewResource( android.R.layout.simple_spinner_item );
+					     // get reference to our spinner
+					     //final Spinner spiStation = (Spinner) findViewById( R.id.spinnerStation );
+					     spiStation.setAdapter(adapter);
+					     bdd.closeDb();
+			     } catch (Exception ex)
+			 	 {
+			 		Log.e(TAG, Log.getStackTraceString(ex));
+			 	 }
+		}
+		public void onNothingSelected(AdapterView<?> arg0) {
 			
-			     c2.close();
-			     bdd.closeDb();
 		}
 
+	});
+     
+     final TextView tv_horaires = (TextView) findViewById(R.id.tv_horaires);
+     
+     spiStation.setOnItemSelectedListener(new OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> parent, View arg1, int arg2, long arg3) {
+			     try {
+					    Cursor item = (Cursor)(spiStation.getSelectedItem());
+					    //Log.e(TAG, item.getString(item.getColumnIndex("nomstation")));
+						String spinnerString = item.getString(item.getColumnIndex("nomstation"));
+						
+						Bdd bdd = new Bdd();
+						// top5 des prochains horaires pour une station donnée avec l'heure actuelle
+						Cursor c2 = bdd.getCursor("HORAIRES,STATIONS", new String[]{"HORAIRES._id", "heurepassage"}, "STATIONS._id=HORAIRES.idstation AND heurepassage > time(strftime('%H:%M:%S'), 'localtime') AND nomStation ='"+spinnerString+"' LIMIT 5 ", null, null, null, null);
+						startManagingCursor(c2);
+						//c2.moveToFirst();
+						c2.moveToPosition(0);
+						int indexHoraire = c2.getColumnIndex("heurepassage");
+		   			    int indexTmpsRestant = c2.getColumnIndex("prix");
+	    			    if(c2 != null && c2.getCount()!=0){
+	    			    	 Time nextHoraire = new Time();
+	    			    	 Time now = new Time();
+	    			    	 now.setToNow();
+	    			    	 nextHoraire.set(now.second, Integer.parseInt(c2.getString(indexHoraire).substring(4, 5)), Integer.parseInt(c2.getString(indexHoraire).substring(0, 1)), now.monthDay, now.month, now.year);
+	    			    	 Log.d(TAG, "nextHoraire=" + nextHoraire.format("%H:%M"));
+	    			    	 // On va avoir besoin de l'heure courante
+	    			    	/* Time tempsRestant = new Time();
+	    			    	 tempsRestant.set(nextHoraire.toMillis(true)-System.currentTimeMillis());
+	    			    	 tv_horaires.setText("Dans "+tempsRestant+ " à "+nextHoraire.toString());
+	    			    	 while(c2.moveToNext()){
+	    			    		 tempsRestant.set(nextHoraire.toMillis(true)-System.currentTimeMillis());
+		    			    	 tv_horaires.setText(tv_horaires.getText()+"\n"+"Dans "+tempsRestant+ " à "+nextHoraire.toString());	    			    		 
+	    			    	 }*/
+		    			     tv_horaires.setVisibility(0);
+		    			    
+	    			     }
+						
+						
+						
+					     bdd.closeDb();
+			     } catch (Exception ex)
+			 	 {
+			 		Log.e(TAG, Log.getStackTraceString(ex));
+			 	 }
+		}
 		public void onNothingSelected(AdapterView<?> arg0) {
-			// TODO Auto-generated method stub
 			
 		}
 

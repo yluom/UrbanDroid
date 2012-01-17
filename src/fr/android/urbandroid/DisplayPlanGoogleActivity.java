@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -188,18 +189,20 @@ public class DisplayPlanGoogleActivity extends MapActivity implements LocationLi
  	        // cette condition limite le zoom mininum
  	       if (mapv.getZoomLevel() > 10)
  	       {
- 	    	   // TODO: POUR chaque ligne, afficherLIgne();
+ 	    	    // TODO: POUR chaque ligne, afficherLIgne();
  	    	   	afficherLigne("MA", Color.RED, mapv, canvas); // affiche ligne A du metro
  	 	        afficherLigne("MB", Color.YELLOW, mapv, canvas); // ligne B
  	 	        afficherLigne("B2", Color.GREEN, mapv, canvas); // ligne de bus
- 	 	        //afficherLigne("B23", Color.argb(150, 142, 74, 5), mapv, canvas); // cette ligne n'existe plus dans notre bdd
  	 	        afficherLigne("T1", Color.BLUE, mapv, canvas); // ligne de tram
  	       }
  	       if (mapv.getZoomLevel() > 13)
  	       {
  	        afficherPoints(mapv, canvas, 'M', R.drawable.iconem); // on affiche pour le metro
- 	        afficherPoints(mapv, canvas, 'B', R.drawable.iconeb); // on affiche pour les bus 
  	        afficherPoints(mapv, canvas, 'T', R.drawable.iconet); // on affiche pour les trams
+ 	       }
+ 	       if(mapv.getZoomLevel() > 14)
+ 	       {
+ 	    	  afficherPoints(mapv, canvas, 'B', R.drawable.iconeb); // on affiche pour les bus  	       }
  	       }
  	    }
  	    // transport = M -> metro, = B -> Bus .. etc 

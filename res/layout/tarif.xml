@@ -69,22 +69,26 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_pla"
         android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/btn_iti"
+        android:layout_alignRight="@+id/btn_hor"
         android:layout_below="@+id/spi_profil"
+        android:paddingLeft="20px"
+        android:paddingTop="40px"
         android:text="Text1"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#000000" android:paddingLeft="20px" android:paddingTop="40px"/>
+        android:textColor="#000000" />
 
     <TextView
         android:id="@+id/tv_prix"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_fav"
-        android:layout_alignLeft="@+id/btn_hor"
+        android:layout_alignLeft="@+id/btn_fav"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/spi_profil"
+        android:gravity="center_horizontal"
+        android:paddingTop="40px"
         android:text="Text3"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#000000" android:gravity="center_horizontal" android:paddingTop="40px"/>
+        android:textColor="#000000" />
 
 </RelativeLayout>
