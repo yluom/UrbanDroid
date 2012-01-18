@@ -54,5 +54,85 @@
     <ImageView android:layout_height="wrap_content" android:id="@+id/ongletMetro" android:src="@drawable/ongmetron" android:layout_width="wrap_content" android:layout_below="@+id/titreHoraire" android:layout_alignParentLeft="true"></ImageView>
     <ImageView android:layout_height="wrap_content" android:id="@+id/ongletTram" android:src="@drawable/ongtramy" android:layout_width="wrap_content" android:layout_alignTop="@+id/ongletMetro" android:layout_alignParentRight="true"></ImageView>
     <ImageView android:layout_height="wrap_content" android:id="@+id/ongletBus" android:src="@drawable/ongbusn" android:layout_width="wrap_content" android:layout_alignTop="@+id/ongletMetro" android:layout_toRightOf="@+id/ongletMetro"></ImageView>
-   
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ongletMetro"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bandeau"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="Tram"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#0b327f" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="10dp"
+        android:text="Veuillez choisir un arrêt"
+        android:textColor="#000000"
+        android:textSize="6pt"
+        android:gravity="center_horizontal" />
+
+    
+
+    <Spinner
+        android:id="@+id/t_spinnerStation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="160dp" />
+
+    <TextView
+        android:id="@+id/t_tv_hor1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/t_spinnerStation"
+        android:layout_centerHorizontal="true"
+        android:text="Prochains passages :"
+        android:textColor="#000000" android:textSize="8pt"/>
+
+    <TextView
+        android:id="@+id/t_tv_sens"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/t_tv_hor1"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/t_tv_hor1"
+        android:text=""
+        android:textColor="#000000" />
+
+    <ToggleButton
+        android:id="@+id/t_btn_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/t_tv_sens"
+        android:layout_alignBottom="@+id/t_tv_sens"
+        android:layout_alignRight="@+id/btn_pla"
+        android:text="ToggleButton"
+        android:textOff="Switch"
+        android:textOn="Switch" />
+
+    <TextView
+        android:id="@+id/t_tv_hor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_fav"
+        android:layout_alignLeft="@+id/t_tv_sens"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/t_btn_switch"
+        android:paddingTop="15px"
+        android:text=""
+        android:textColor="#000000"
+        android:textSize="8pt" />
+
 </RelativeLayout>

@@ -90,6 +90,8 @@ public class DisplayPlanGoogleActivity extends MapActivity implements LocationLi
 	    	// this.mapView =  new MapView(this,this.getResources().getString(R.string.mapKey));
 	 		this.mapView.setClickable(true);
 	    	 this.mapView.setBuiltInZoomControls(true);
+	    	 this.mapView.preLoad();
+	    	 this.userLocation.enableCompass();
 	    	
 	     }
 	     catch (Exception ex)
