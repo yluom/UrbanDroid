@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -89,6 +90,8 @@ public class DisplayItineraireActivity extends Activity
      iv5.setOnClickListener(menuSwitcher);
      Button b = (Button) findViewById(R.id.btnValider);
      b.setOnClickListener(menuSwitcher);
+     TimePicker tp = (TimePicker)findViewById(R.id.timePicker);
+     tp.setIs24HourView(true);
      
      try
      {
