@@ -33,11 +33,11 @@ public class DisplayHorairesActivity extends Activity
       	  	case R.id.btn_pla: intent = new Intent(DisplayHorairesActivity.this, DisplayPlanActivity.class);
       	  						startActivity(intent); break;
       	  	case R.id.ongletMetro: intent = new Intent(DisplayHorairesActivity.this, DisplayHorairesActivity.class);
-				startActivity(intent); break;
+								startActivity(intent); break;
       	  	case R.id.ongletBus: intent = new Intent(DisplayHorairesActivity.this, DisplayHorairesBActivity.class);
-			startActivity(intent); break;
+      	  						startActivity(intent); break;
       	  	case R.id.ongletTram: intent = new Intent(DisplayHorairesActivity.this, DisplayHorairesTActivity.class);
-				startActivity(intent); break;
+								startActivity(intent); break;
       	  }
          
        }

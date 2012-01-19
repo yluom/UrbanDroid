@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.util.Log;
 import android.view.*;
@@ -22,10 +23,14 @@ public class DisplayResItineraireActivity extends Activity
 {
 	
 	private static final String TAG = "DisplayResItineraireActivity";
+	private ProgressDialog progressDialog;
+
 	
      public void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
      setContentView(R.layout.resitineraire);
+     progressDialog = new ProgressDialog(this);
+
      
      OnClickListener menuSwitcher = new OnClickListener()
      {
@@ -94,7 +99,7 @@ public class DisplayResItineraireActivity extends Activity
         
 	     ArrayList<Ligne> listeLigneDepart = new ArrayList<Ligne>();
 	     ArrayList<Ligne> listeLigneArrivee = new ArrayList<Ligne>();
-	     // Remplir la liste de ligne de la station de départ
+	     // Remplir la liste de ligne de la station de dï¿½part
 	     Set<String> setLigne = depart.listeLigne().keySet();
 	     Iterator<String> it = setLigne.iterator();
 	     String buffer = "";
@@ -104,7 +109,7 @@ public class DisplayResItineraireActivity extends Activity
 	    	 listeLigneDepart.add(nouvelleLigne(buffer));
 	    	 Log.d(TAG, "Ligne depart added = " + buffer);
 	     }
-	     // Remplir la liste de ligne de la station d'arrivée
+	     // Remplir la liste de ligne de la station d'arrivï¿½e
 	     Set<String> setLigne2 = arrivee.listeLigne().keySet();
 	     Iterator<String> it2 = setLigne2.iterator();
 	     buffer = "";

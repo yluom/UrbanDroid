@@ -29,9 +29,6 @@ public class DisplayHorairesBActivity extends Activity
 	public static int idTerminus;
 	public static String idLigne;
 	
-	// Les element graphiques necessaires
-
-	 
      public void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
      setContentView(R.layout.horairesb);
