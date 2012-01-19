@@ -13,7 +13,9 @@ import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -51,6 +53,26 @@ public class DisplayItineraireActivity extends Activity
      	  						startActivity(intent); break;
      	  	case R.id.btn_pla: intent = new Intent(DisplayItineraireActivity.this, DisplayPlanActivity.class);
      	  						startActivity(intent); break;
+     	  	case R.id.btnValider:
+     	  		intent = new Intent(DisplayItineraireActivity.this, DisplayResItineraireActivity.class);
+     	  		
+     	  		Spinner spinnerDepart = (Spinner) findViewById(R.id.spinner1);
+     	       	Spinner spinnerArrivee = (Spinner) findViewById(R.id.spinner2);
+     	  		Bundle bundle = new Bundle();
+     	  		
+     	  		Cursor cursorDepart = (Cursor) spinnerDepart.getSelectedItem();
+     	  		bundle.putString("StationDepart", cursorDepart.getString(cursorDepart.getColumnIndex("nomstation")));
+     	  		
+     	  		Cursor cursorArrivee = (Cursor) spinnerArrivee.getSelectedItem();	  		
+     	  		bundle.putString("StationArrivee", cursorArrivee.getString(cursorArrivee.getColumnIndex("nomstation")));
+
+     	  		
+     	  		Log.e(TAG, "stationArrivee = " + bundle.getString("StationArrivee"));
+     	        Log.e(TAG, "stationDepart = " + bundle.getString("StationDepart"));
+     	        
+     	  		intent.putExtras(bundle);
+				startActivity(intent);
+				break;
      	  }
        }       
      };
@@ -65,9 +87,12 @@ public class DisplayItineraireActivity extends Activity
      iv4.setOnClickListener(menuSwitcher);
      ImageView iv5 = (ImageView) findViewById(R.id.btn_pla);
      iv5.setOnClickListener(menuSwitcher);
+     Button b = (Button) findViewById(R.id.btnValider);
+     b.setOnClickListener(menuSwitcher);
      
      try
      {
+    	 
 	     Cursor c = Bdd.fetchAllTitles("STATIONS", new String[]{"_id","nomstation"}, null, null, null, null, "nomstation ASC" );
 	     startManagingCursor(c);
 	     // Stock la colone que l'on veut afficher
@@ -85,40 +110,6 @@ public class DisplayItineraireActivity extends Activity
 	     Spinner s2 = (Spinner) findViewById( R.id.spinner2 );
 	     s2.setAdapter(adapter);
 	     Bdd.db.close();
-	     
-	     /*
-	      * CODE DE L'ITINERAIRE - I LOVE BELLMAN FORD
-	      */
-	     Ligne testLigne = nouvelleLigne("MA");
-	     Station depart = testLigne.getListeStation().get(1);
-	     Station arrivee = testLigne.getListeStation().get(5);
-	     //Toast.makeText(this, "Nom station d�part = " + depart.getNom(), Toast.LENGTH_LONG).show();
-	     ArrayList<Ligne> listeLigneDepart = new ArrayList<Ligne>();
-	     ArrayList<Ligne> listeLigneArrivee = new ArrayList<Ligne>();
-	    
-	     Set<String> setLigne = depart.listeLigne().keySet();
-	     Iterator<String> it = setLigne.iterator();
-	     String buffer;
-	     while (it.hasNext())
-	     {
-	    	 buffer = it.next();
-	    	 listeLigneDepart.add(nouvelleLigne(buffer));
-	    	 //Toast.makeText(this, "Ligne (d�part) add = " + buffer, Toast.LENGTH_LONG).show();
-	     }
-	     
-	     Set<String> setLigne2 = arrivee.listeLigne().keySet();
-	     Iterator<String> it2 = setLigne2.iterator();
-	     buffer = "";
-	     while (it2.hasNext())
-	     {
-	    	 buffer = it2.next();
-	    	 listeLigneArrivee.add(nouvelleLigne(buffer));
-	    	 //Toast.makeText(this, "Ligne (arriv�e) add = " + buffer, Toast.LENGTH_LONG).show();
-	     }
-	     
-	     Itineraire iti = new Itineraire(depart, arrivee, listeLigneArrivee, listeLigneDepart);
-	     iti.calculerItineraire();
-	     Toast.makeText(this, "Résultat itinéraire = \n" + iti.toString(), Toast.LENGTH_LONG).show();
 	     
      }
 		catch(Exception ex)
@@ -205,6 +196,9 @@ public class DisplayItineraireActivity extends Activity
  	//c.close();
  	// On ferme la bdd
  	bdd.closeDb();
+ 	stopManagingCursor(c);
+ 	c.close();
+ 	
  	return new Ligne(paramNomLigne,type,listeStation);
  }
  	
@@ -250,9 +244,8 @@ public class DisplayItineraireActivity extends Activity
  	    //c.close();
  	    // Fermer la bdd
  	    bdd.closeDb();
- 		
- 		
- 		
+ 	 	stopManagingCursor(cInit);
+ 	 	cInit.close();
  		
  		bdd = new Bdd();
  		// Requ�te permettant d'obtenir tous les terminus = 1		(les premiers de la ligne)		SELECT idligne FROM DESSERT WHERE idstation=1 AND position = 1
@@ -287,7 +280,9 @@ public class DisplayItineraireActivity extends Activity
  	    //c.close();
  	    // Fermer la bdd
  	    bdd.closeDb();
- 	    
+ 	 	stopManagingCursor(c);
+ 	 	c.close();
+ 	 	
  	    Bdd bdd2 = new Bdd();
  	    // Requ�te permettant d'obtenir tous les noms de lignes
  		Cursor cursorNomLigne = bdd2.getCursor("LIGNES", 	//FROM
@@ -332,7 +327,9 @@ public class DisplayItineraireActivity extends Activity
  	    	// Fin du if(cursTerm != null) = Fermeture du cursTerm
  	    	//cursTerm.close();
  	    	bdd3.closeDb();
-  	    	
+ 	    	stopManagingCursor(cursTerm);
+ 	    	cursTerm.close();
+ 	    	
  	    	Bdd bdd4 = new Bdd();
  	    	//Permet d'executer la requ�te SELECT idligne FROM DESSERT WHERE idstation=idStation AND position = (SELECT MAX(position) FROM DESSERT WHERE idligne=nomLigne) avec tout les nom de Lignes
  	    	while (cursorNomLigne.moveToNext()) {
@@ -362,17 +359,19 @@ public class DisplayItineraireActivity extends Activity
  		    	// Fin du if(cursTerm != null) = Fermeture du cursTerm
  		    	//cursTerm.close();
  		    	bdd4.closeDb();
+ 	 	    	stopManagingCursor(cursTerm);
+ 	 	    	cursTerm.close();
+ 	 	    	
  		     }
  	    }
  	    
  	    // Fin de if (cursorNomLigne != null) = Fermeture de cursorNomLigne
  	    //cursorNomLigne.close();
  	    bdd2.closeDb();
- 		
+	    stopManagingCursor(cursorNomLigne);
+	    cursorNomLigne.close();
+	    	
  		return listeLigne;
  	}
- 	
-
-
 
 }

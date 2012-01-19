@@ -31,6 +31,7 @@
         <activity android:name=".DisplayHorairesTActivity" />
         <activity android:name=".DisplayPlanGoogleActivity" />
         <activity android:name=".DisplayPlanActivity" />
+        <activity android:name=".DisplayResItineraireActivity" />
         <uses-library android:name="com.google.android.maps" />
         
     </application>

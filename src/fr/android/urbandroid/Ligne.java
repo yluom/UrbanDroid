@@ -59,7 +59,7 @@ public class Ligne
 		while (it.hasNext())
 		{
 			buffer = it.next();
-			if (station.getNom() == this.listeStation.get(buffer).getNom())
+			if (station.getNom().equals(this.listeStation.get(buffer).getNom()))
 				return buffer;
 		}
 		return -1;	

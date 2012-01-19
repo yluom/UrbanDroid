@@ -1,0 +1,401 @@
+package fr.android.urbandroid;
+ 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeMap;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
+import android.view.*;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.Toast;
+import android.os.Bundle;
+import android.widget.TextView;
+
+import android.database.Cursor;
+ 
+public class DisplayResItineraireActivity extends Activity
+{
+	
+	private static final String TAG = "DisplayResItineraireActivity";
+	
+     public void onCreate(Bundle savedInstanceState) {
+     super.onCreate(savedInstanceState);
+     setContentView(R.layout.resitineraire);
+     
+     OnClickListener menuSwitcher = new OnClickListener()
+     {
+       public void onClick(View actualView)
+       {
+           Intent intent;
+     	  switch(actualView.getId())
+     	  {
+     	  	case R.id.btn_tar: intent = new Intent(DisplayResItineraireActivity.this, DisplayTarifActivity.class);
+     	  						startActivity(intent); break;
+      	  	case R.id.btn_iti: intent = new Intent(DisplayResItineraireActivity.this, DisplayItineraireActivity.class);
+									startActivity(intent); break;
+     	  	case R.id.btn_hor: intent = new Intent(DisplayResItineraireActivity.this, DisplayHorairesActivity.class);
+     	  						startActivity(intent); break;
+     	  	case R.id.btn_fav: intent = new Intent(DisplayResItineraireActivity.this, DisplayFavorisActivity.class);
+     	  						startActivity(intent); break;
+     	  	case R.id.btn_pla: intent = new Intent(DisplayResItineraireActivity.this, DisplayPlanActivity.class);
+     	  						startActivity(intent); break;
+     	  }
+       }       
+     };
+   
+     ImageView iv = (ImageView) findViewById(R.id.btn_tar);
+     iv.setOnClickListener(menuSwitcher);
+     ImageView iv2 = (ImageView) findViewById(R.id.btn_iti);
+     iv2.setOnClickListener(menuSwitcher);
+     ImageView iv3 = (ImageView) findViewById(R.id.btn_hor);
+     iv3.setOnClickListener(menuSwitcher);
+     ImageView iv4 = (ImageView) findViewById(R.id.btn_fav);
+     iv4.setOnClickListener(menuSwitcher);
+     ImageView iv5 = (ImageView) findViewById(R.id.btn_pla);
+     iv5.setOnClickListener(menuSwitcher);
+     TextView tv = (TextView) findViewById(R.id.texteParcours);
+
+     try
+     {
+	     
+	     /*
+	      * CODE DE L'ITINERAIRE - FloppyBomb
+	      * 
+	      * Utilisation : TODO
+	      */
+    	 // Instancier les stations
+         Bundle bundle = this.getIntent().getExtras();
+         String stationDepart = bundle.getString("StationDepart");
+         String stationArrivee = bundle.getString("StationArrivee");
+         
+         Station depart = this.getStation(stationDepart, "MA");
+         if (depart == null)
+        	 depart = this.getStation(stationDepart, "MB");
+         if (depart == null)
+        	 depart = this.getStation(stationDepart, "B2");
+         if (depart == null)
+        	 depart = this.getStation(stationDepart, "T1");
+         
+         Station arrivee = this.getStation(stationArrivee, "MA");
+         if (arrivee == null)
+        	 arrivee = this.getStation(stationArrivee, "MB");
+         if (arrivee == null)
+        	 arrivee = this.getStation(stationArrivee, "B2");
+         if (arrivee == null)
+        	 arrivee = this.getStation(stationArrivee, "T1");
+         
+         Log.e(TAG, "stationDepart = " + stationDepart);
+         Log.e(TAG, "stationArrivee = " + stationArrivee);
+        
+	     ArrayList<Ligne> listeLigneDepart = new ArrayList<Ligne>();
+	     ArrayList<Ligne> listeLigneArrivee = new ArrayList<Ligne>();
+	     // Remplir la liste de ligne de la station de départ
+	     Set<String> setLigne = depart.listeLigne().keySet();
+	     Iterator<String> it = setLigne.iterator();
+	     String buffer = "";
+	     while (it.hasNext())
+	     {
+	    	 buffer = it.next();
+	    	 listeLigneDepart.add(nouvelleLigne(buffer));
+	    	 Log.d(TAG, "Ligne depart added = " + buffer);
+	     }
+	     // Remplir la liste de ligne de la station d'arrivée
+	     Set<String> setLigne2 = arrivee.listeLigne().keySet();
+	     Iterator<String> it2 = setLigne2.iterator();
+	     buffer = "";
+	     while (it2.hasNext())
+	     {
+	    	 buffer = it2.next();
+	    	 listeLigneArrivee.add(nouvelleLigne(buffer));
+	    	 Log.d(TAG, "Ligne arrivee added = " + buffer);
+	     }
+	     
+	     Itineraire iti = new Itineraire(depart, arrivee, listeLigneDepart, listeLigneArrivee);
+	     iti.calculerItineraire();
+	     tv.setText(iti.toString());
+	     //Toast.makeText(this, "Resultat itineraire = \n" + iti.toString(), Toast.LENGTH_LONG).show();
+	     Log.d(TAG, "Resultat itineraire = \n" + iti.toString());
+     }
+		catch(Exception ex)
+		{
+			Log.e(TAG, Log.getStackTraceString(ex));
+			Toast.makeText(this, "BDD #2 :" + ex.toString(), Toast.LENGTH_LONG).show();
+		}
+     
+   }
+
+     @Override
+     protected void onDestroy() {
+         super.onDestroy();
+         if (Bdd.db != null)
+             Bdd.db.close();
+     }
+     
+     public Ligne nouvelleLigne(String paramNomLigne){
+ 		Bdd bdd = new Bdd();
+ 		Cursor c = bdd.getCursor(	"LIGNES, TYPES, STATIONS, DESSERT", 	//FROM
+ 				new String[]{"LIGNES.idligne", "nomtype", "position", "longitude", "latitude", "nomstation", "STATIONS._id"},  //SELECT
+ 				"LIGNES.idtype = TYPES.idtype AND STATIONS._id = DESSERT.idstation AND DESSERT.idligne = LIGNES.idligne AND LIGNES.idligne = '"+paramNomLigne+"'", //WHERE
+ 				null,
+ 				null, 
+ 				null,
+ 				"position" ); //ORDER BY
+ 		startManagingCursor(c);
+ 	    c.moveToFirst();
+ 	    
+ 	    
+ 	    //Initialisation ï¿½ null de la variable type (METRO, BUS, TRAM)
+ 	    String type =null;
+ 	    //TreeMap servant ï¿½ remplir la liste des stations qui se trouve sur la ligne paramNomLigne avec en clï¿½ leur position
+         TreeMap<Integer, Station> listeStation = new TreeMap<Integer, Station>();
+         //Variable permetant de stocker nos station courante
+ 	    Station stationCourante;
+         
+ 	    //Rï¿½cupï¿½ration des index de colone de la requï¿½te
+ 	    int colonneNomLigne = c.getColumnIndex("idligne");
+         int colonneNomType = c.getColumnIndex("nomtype");
+         int colonneLong = c.getColumnIndex("longitude");
+         int colonneLat = c.getColumnIndex("latitude");
+         int colonneNomStation = c.getColumnIndex("nomstation");
+         int colonnePosition = c.getColumnIndex("position");
+         int colonneIdStation = c.getColumnIndex("_id");
+         
+         //Vï¿½rifie que la requï¿½te retourne quelque chose
+ 	    if (c != null && c.getCount() != 0) {
+ 	    	
+ 	    	//Initialisation au premier passage avec les valeurs de la premiere ligne de resultats de la requï¿½te
+ 	    	String nomLigne = c.getString(colonneNomLigne);
+ 	    	type = c.getString(colonneNomType);
+ 	    	float lat = c.getFloat(colonneLat);
+             float longi = c.getFloat(colonneLong);
+             String nomStation = c.getString(colonneNomStation);
+             int position = c.getInt(colonnePosition);
+             int idStation = c.getInt(colonneIdStation);
+             
+             // Crï¿½ï¿½ une station avec une longitude, latitude, nom et la MAP gï¿½nï¿½rï¿½ par listerTerminus
+             stationCourante = new Station(longi, lat, nomStation, listerTerminus(idStation));
+             
+             //Ajoute ï¿½ la position 1 (car ORDER BY position ) la premiï¿½re station crï¿½ï¿½e ci dessus...
+             listeStation.put(position, stationCourante);
+             
+             //On passe maintenant aux autres Stations de maniï¿½re ï¿½ remplir la TreeMap
+ 	        while (c.moveToNext()) {
+ 	        	//Rï¿½cupï¿½ration des valeurs des autres lignes de rï¿½sultats de la requï¿½te
+ 		    	nomLigne = c.getString(colonneNomLigne);
+ 		    	type = c.getString(colonneNomType);
+ 		    	lat = c.getFloat(colonneLat);
+ 	            longi = c.getFloat(colonneLong);
+ 	            nomStation = c.getString(colonneNomStation);
+ 	            position = c.getInt(colonnePosition);
+ 	            idStation = c.getInt(colonneIdStation);
+
+ 	            // Crï¿½ï¿½ une nouvelle station ï¿½ chaque ligne de rï¿½sultat
+ 	            stationCourante = new Station(longi, lat, nomStation, listerTerminus(idStation));
+ 	            
+ 	            //Ajoute cette nouvelle station ï¿½ la TreeMap
+ 	            listeStation.put(position, stationCourante);
+ 	        }
+ 	}
+ 	//Fin du if (c != null) = Fermeture de notre Cursor c
+ 	//c.close();
+ 	// On ferme la bdd
+ 	bdd.closeDb();
+ 	stopManagingCursor(c);
+ 	c.close();
+ 	
+ 	return new Ligne(paramNomLigne,type,listeStation);
+ }
+ 	
+ 	
+ 	//Fonction qui retourne la HashMap de toutes les lignes pour laquelle notre station est terminus(position=1 ou position=MAX(position) sur l'enssemble des lignes )
+ 	public HashMap<String, Boolean> listerTerminus(int idStation){
+ 		
+ 		//Crï¿½ation de la HashMap vierge
+ 		HashMap<String, Boolean> listeLigne = new HashMap<String, Boolean>();
+ 		
+ 		
+ 		//Initialisation ï¿½ false de la HashMap
+ 		Bdd bdd = new Bdd();
+ 		// Requï¿½te permettant d'obtenir tous les terminus = 1		(les premiers de la ligne)		SELECT idligne FROM DESSERT WHERE idstation=1 AND position = 1
+ 		Cursor cInit = bdd.getCursor("DESSERT", 	//FROM
+ 				new String[]{"idligne", "_id"},  //SELECT
+ 				"idstation="+idStation, //WHERE
+ 				null,
+ 				null, 
+ 				null, 
+ 				null );
+ 		startManagingCursor(cInit);
+ 	    cInit.moveToFirst();
+ 	    
+ 	    //Recupï¿½re l'index de la colone nomligne
+ 	    int colonneNomLigne = cInit.getColumnIndex("idligne");
+ 	    
+ 	    //Verification que la requï¿½te retourne qqch
+ 	    if (cInit != null && cInit.getCount() != 0) {
+ 	    	
+ 	    	//Premiï¿½re ligne de rï¿½sultat
+ 	    	String nomLigne = cInit.getString(colonneNomLigne);
+ 	    	listeLigne.put(nomLigne, false);
+ 	    	while (cInit.moveToNext()) {
+ 	    		 
+ 	    		 //Ajoute ï¿½ la map listeLigne les autres rï¿½sultats
+ 	    		nomLigne = cInit.getString(colonneNomLigne);
+ 	 	    	listeLigne.put(nomLigne, false);
+ 		     }
+ 		}
+ 	    
+ 	    // Fin de if (c != null) = Fermeture de c
+ 	    //c.close();
+ 	    // Fermer la bdd
+ 	    bdd.closeDb();
+ 	 	stopManagingCursor(cInit);
+ 	 	cInit.close();
+ 		
+ 		bdd = new Bdd();
+ 		// Requï¿½te permettant d'obtenir tous les terminus = 1		(les premiers de la ligne)		SELECT idligne FROM DESSERT WHERE idstation=1 AND position = 1
+ 		Cursor c = bdd.getCursor("DESSERT", 	//FROM
+ 				new String[]{"idligne", "_id"},  //SELECT
+ 				"idstation="+idStation+" AND position = 1", //WHERE
+ 				null,
+ 				null, 
+ 				null, 
+ 				null );
+ 		startManagingCursor(c);
+ 	    c.moveToFirst();
+ 	    
+ 	    //Recupï¿½re l'index de la colone nomligne
+ 	    colonneNomLigne = c.getColumnIndex("idligne");
+ 	    
+ 	    //Verification que la requï¿½te retourne qqch
+ 	    if (c != null && c.getCount() != 0) {
+ 	    	
+ 	    	//Premiï¿½re ligne de rï¿½sultat
+ 	    	String nomLigne = c.getString(colonneNomLigne);
+ 	    	listeLigne.put(nomLigne, true);
+ 	    	while (c.moveToNext()) {
+ 	    		 
+ 	    		 //Ajoute ï¿½ la map listeLigne les autres rï¿½sultats
+ 	    		nomLigne = c.getString(colonneNomLigne);
+ 	 	    	listeLigne.put(nomLigne, true);
+ 		     }
+ 		}
+ 	    
+ 	    // Fin de if (c != null) = Fermeture de c
+ 	    //c.close();
+ 	    // Fermer la bdd
+ 	    bdd.closeDb();
+ 	 	stopManagingCursor(c);
+ 	 	c.close();
+ 	 	
+ 	    Bdd bdd2 = new Bdd();
+ 	    // Requï¿½te permettant d'obtenir tous les noms de lignes
+ 		Cursor cursorNomLigne = bdd2.getCursor("LIGNES", 	//FROM
+ 				new String[]{"idligne", "_id"},  //SELECT
+ 				null, //WHERE
+ 				null,
+ 				null, 
+ 				null, 
+ 				"idligne" );
+ 		startManagingCursor(cursorNomLigne);
+ 		cursorNomLigne.moveToFirst();
+ 		
+ 		 //Recupï¿½re l'index de la colone nomligne
+ 	    int nomLigneIndex = cursorNomLigne.getColumnIndex("idligne");
+ 	    
+ 	    //Facultatif : il y aura toujours un rï¿½sultat parce qu'on aura toujours des Lignes dans la BDD...
+ 	    if (cursorNomLigne != null && cursorNomLigne.getCount() != 0) {
+ 	    	
+ 		    //Premiï¿½re ligne de rï¿½sultat
+ 	    	String nomLigne = cursorNomLigne.getString(nomLigneIndex);
+ 	    	
+ 	    	Bdd bdd3 = new Bdd();
+ 	    	bdd3.closeDb();
+ 	    	//Toast.makeText(this, "idStation = " + idStation + "\nnomligne = " + nomLigne, Toast.LENGTH_LONG).show();
+ 	    	//requete d'obtention du/des terminus pour une ligne donnï¿½e (nomLigne) par rapport ï¿½ notre station courante param idstation
+ 	    	Cursor cursTerm = bdd3.getCursor("DESSERT", 	//FROM
+ 					new String[]{ "_id","idligne"},  //SELECT
+ 					"idstation="+idStation+" AND position = (SELECT MAX(position) FROM DESSERT WHERE idligne='"+nomLigne+"')", //WHERE
+ 					null,
+ 					null, 
+ 					null, 
+ 					null );
+ 	    	startManagingCursor(cursTerm);
+ 	    	colonneNomLigne = cursTerm.getColumnIndex("idligne");
+ 	    	cursTerm.moveToFirst();
+ 	    	//Toast.makeText(this, "valeur = " + colonneNomLigne, Toast.LENGTH_LONG).show();
+ 	    	if(cursTerm != null && cursTerm.getCount() != 0){
+ 	    		//Premiï¿½re et unique ligne de rï¿½sultat possible ( un terminus MAX possible par ligne !!! )   Explication : Le MIN(position) de nimporte quelle ligne est toujours 1, alors que le MAX(position) vari : 24, 20 ou 18 ... C'est pourquoi on parcourt le MAX(position) de CHAQUE Lignes...
+ 	 	    	nomLigne = cursTerm.getString(colonneNomLigne);
+ 	 	    	listeLigne.put(nomLigne, true);
+ 	    	}
+ 	    	// Fin du if(cursTerm != null) = Fermeture du cursTerm
+ 	    	//cursTerm.close();
+ 	    	bdd3.closeDb();
+ 	    	stopManagingCursor(cursTerm);
+ 	    	cursTerm.close();
+ 	    	
+ 	    	Bdd bdd4 = new Bdd();
+ 	    	//Permet d'executer la requï¿½te SELECT idligne FROM DESSERT WHERE idstation=idStation AND position = (SELECT MAX(position) FROM DESSERT WHERE idligne=nomLigne) avec tout les nom de Lignes
+ 	    	while (cursorNomLigne.moveToNext()) {
+ 	    		 
+ 	    		 //Ajoute ï¿½ la map listeLigne les autres rï¿½sultats
+ 	    		nomLigne = cursorNomLigne.getString(nomLigneIndex);
+ 	    		
+ 	 	    	//Toast.makeText(this, "idStation = " + idStation + "\nnomligne = " + nomLigne, Toast.LENGTH_LONG).show();
+
+ 		    	//requete d'obtention du/des terminus pour une ligne donnï¿½e (nomLigne) par rapport ï¿½ notre station courante param idstation
+ 		    	cursTerm = bdd4.getCursor("DESSERT", 	//FROM
+ 						new String[]{"idligne", "_id"},  //SELECT
+ 						"idstation="+idStation+" AND position = (SELECT MAX(position) FROM DESSERT WHERE idligne='"+nomLigne+"')", //WHERE
+ 						null,
+ 						null, 
+ 						null, 
+ 						null );
+ 		    	startManagingCursor(cursTerm);
+ 		    	cursTerm.moveToFirst();
+ 		    	colonneNomLigne = cursTerm.getColumnIndex("idligne");
+ 		    	
+ 		    	if(cursTerm != null && cursTerm.getCount() != 0){
+ 		    		//Premiï¿½re et unique ligne de rï¿½sultat possible ( un terminus MAX possible par ligne !!! )   Explication : Le MIN(position) de nimporte quelle ligne est toujours 1, alors que le MAX(position) vari : 24, 20 ou 18 ... C'est pourquoi on parcourt le MAX(position) de CHAQUE Lignes...
+ 		 	    	nomLigne = cursTerm.getString(colonneNomLigne);
+ 		 	    	listeLigne.put(nomLigne, true);
+ 		    	}
+ 		    	// Fin du if(cursTerm != null) = Fermeture du cursTerm
+ 		    	//cursTerm.close();
+ 		    	bdd4.closeDb();
+ 	 	    	stopManagingCursor(cursTerm);
+ 	 	    	cursTerm.close();
+ 	 	    	
+ 		     }
+ 	    }
+ 	    
+ 	    // Fin de if (cursorNomLigne != null) = Fermeture de cursorNomLigne
+ 	    //cursorNomLigne.close();
+ 	    bdd2.closeDb();
+	    stopManagingCursor(cursorNomLigne);
+	    cursorNomLigne.close();
+	    	
+ 		return listeLigne;
+ 	}
+ 	
+ 	public Station getStation(String s, String ligne)
+ 	{
+ 		Ligne l = nouvelleLigne(ligne);
+        int i;
+ 		Set<Integer> setInt = l.getListeStation().keySet();
+ 		Iterator<Integer> itInt = setInt.iterator();
+ 		while(itInt.hasNext())
+ 		{
+ 			i = itInt.next();
+ 			if (l.getStation(i).getNom().equals(s))
+ 				return l.getStation(i);
+ 		}
+ 		return null;
+ 		
+ 	}
+ }

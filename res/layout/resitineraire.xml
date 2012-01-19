@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:src="@drawable/favg" />
+        android:src="@drawable/favb" />
 
     <ImageView
         android:id="@+id/btn_hor"
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/btn_hor"
-        android:src="@drawable/itib" />
+        android:src="@drawable/itig" />
 
     <ImageView
         android:id="@+id/btn_tar"
@@ -50,49 +50,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/bandfav" >
+        android:src="@drawable/banditi" >
     </ImageView>
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/texteParcours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignRight="@+id/btn_iti"
         android:layout_below="@+id/imageView1"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:text="Veuillez sélectionner un favori"
+        android:layout_marginTop="68dp"
+        android:text="Large Text"
         android:textColor="#000000"
-        android:textSize="8pt" />
-
-    <Spinner
-        android:id="@+id/spiFavoris"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="14dp" />
-
-    <Button
-        android:id="@+id/btn_del"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/spiFavoris"
-        android:layout_marginLeft="13dp"
-        android:layout_marginTop="102dp"
-        android:text="Supprimer le favori" />
-
-    <Button
-        android:id="@+id/btn_calcul"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btn_del"
-        android:layout_alignBottom="@+id/btn_del"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="13dp"
-        android:text="Calculer l'itinéraire" />
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>
