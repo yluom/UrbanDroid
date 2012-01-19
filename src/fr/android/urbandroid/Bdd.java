@@ -5,10 +5,12 @@ import java.util.TreeMap;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class Bdd 
 {
 	
+	private static final String TAG = "Bdd.java";
 	public static SQLiteDatabase db = null;
 	private SQLiteDatabase nonStaticDb = null;
 	private Cursor c = null;
@@ -45,8 +47,22 @@ public class Bdd
 		}
 		catch(Exception ex)
 		{
+			Log.e(TAG, Log.getStackTraceString(ex));
 		}
 		return null;
+	}
+	
+	public void openDb()
+	{
+		try {
+			String DB_PATH = "/data/data/fr.android.urbandroid/";
+			String DB_NAME = "urbdroid.db";
+			String myPath = DB_PATH + DB_NAME;
+			this.db = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
+		} catch(Exception ex)
+		{
+			Log.e(TAG, Log.getStackTraceString(ex));
+		}
 	}
 	
 	public void closeDb()

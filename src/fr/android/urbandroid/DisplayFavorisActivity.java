@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -20,7 +21,10 @@ public class DisplayFavorisActivity extends Activity
 {
 	 private static final String TAG = "UrbanDroidActivity";
 	 private static String depart;
-	 private static String arrivee; 
+	 private static String arrivee;
+	 private static int idArrivee;
+	 private static int idDepart;
+	 
 	 
      public void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
@@ -47,18 +51,33 @@ public class DisplayFavorisActivity extends Activity
       	    					Log.e(TAG, "CLIC sur btn_calcul");
 					   	  		intent = new Intent(DisplayFavorisActivity.this, DisplayResItineraireActivity.class);
 					   	  		Bundle bundle = new Bundle();
-					   	  	    
 					   	  		bundle.putString("StationDepart", depart);
 					   	  		bundle.putString("StationArrivee", arrivee);
 					   	  		intent.putExtras(bundle);
 								startActivity(intent);
 					   	  	    Log.e(TAG, "startActivity Started");
 								break;
+      	    case R.id.btn_del:
+				      		  try {
+									Bdd bdd = new Bdd();
+									bdd.openDb();
+									bdd.db.delete("FAVORIS", "idstationfav='"+idDepart+"' AND idstation = '"+idArrivee+"' ", null);
+									bdd.db.close();
+									toaster("Favori supprimé !");
+									intent = new Intent(DisplayFavorisActivity.this, DisplayFavorisActivity.class);
+									startActivity(intent);
+									
+									
+				      		  } catch (Exception ex)
+				      		  {
+				      			Log.e(TAG, Log.getStackTraceString(ex));
+				      		  }
+							  break;
       	  }
          
        }
      };
-   
+    
      ImageView iv = (ImageView) findViewById(R.id.btn_tar);
      iv.setOnClickListener(menuSwitcher);
      ImageView iv2 = (ImageView) findViewById(R.id.btn_iti);
@@ -71,8 +90,10 @@ public class DisplayFavorisActivity extends Activity
      iv5.setOnClickListener(menuSwitcher);
      Button btn_calcul = (Button) findViewById(R.id.btn_calcul);
      btn_calcul.setOnClickListener(menuSwitcher);
+     Button btn_del = (Button) findViewById(R.id.btn_del);
+     btn_del.setOnClickListener(menuSwitcher);
      
-     Cursor c = Bdd.fetchAllTitles("FAVORIS, STATIONS as sta1, STATIONS AS sta2", new String[]{"sta1._id","sta1.nomstation as depart", "sta2.nomstation as arrivee", "nomfavoris"}, "FAVORIS.idstationfav=sta1._id AND FAVORIS.idstation = sta2._id", null, null, null, null);
+     Cursor c = Bdd.fetchAllTitles("FAVORIS, STATIONS as sta1, STATIONS AS sta2", new String[]{"sta1._id","sta1.nomstation as depart", "sta2.nomstation as arrivee", "nomfavoris", "idstationfav", "idstation"}, "FAVORIS.idstationfav=sta1._id AND FAVORIS.idstation = sta2._id", null, null, null, null);
      startManagingCursor(c);
      // Stock la colone que l'on veut afficher
      String[] from = new String[]{"nomfavoris"};
@@ -91,6 +112,9 @@ public class DisplayFavorisActivity extends Activity
 				Cursor item = (Cursor)(s.getSelectedItem());
 				depart = item.getString(item.getColumnIndex("depart"));
 				arrivee = item.getString(item.getColumnIndex("arrivee"));
+				idArrivee = item.getInt(item.getColumnIndex("idstation"));
+				idDepart = item.getInt(item.getColumnIndex("idstationfav"));
+				
 		}
 		public void onNothingSelected(AdapterView<?> arg0) {
 			// TODO Auto-generated method stub
@@ -100,4 +124,8 @@ public class DisplayFavorisActivity extends Activity
 
      
    }
+     private void toaster(String s)
+     {
+    	 Toast.makeText(this, ""+s+"", Toast.LENGTH_LONG).show();
+     }
 }

@@ -5,9 +5,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.ArrayList;
-import android.database.Cursor;
 import android.util.Log;
-
 
 public class Itineraire  
 {
@@ -22,15 +20,33 @@ public class Itineraire
 	private ArrayList<Ligne> ligneDepart = new ArrayList<Ligne>();
 	// La liste de ligne dont fait partie la station d'arrivï¿½e.
 	private ArrayList<Ligne> ligneArrivee = new ArrayList<Ligne>();
+	// Heure de départ/arrivée
+	private String heure;
+	// Minute de départ/arrivée
+	private String minute;
+	// La blacklist de ligne
+	private ArrayList<Ligne> bl;
+	// Vraie si on cherche le départ; Faux si on cherche l'arrivée
+	private boolean whatHeure;
 	
 	// Constructeur.
-	public Itineraire(Station depart, Station arrivee, ArrayList<Ligne> listeLigneDepart, ArrayList<Ligne> listeLigneArrivee)
+	public Itineraire(Station depart, Station arrivee, ArrayList<Ligne> listeLigneDepart, ArrayList<Ligne> listeLigneArrivee, String paramHeure, String paramMinute, boolean b)
 	{
 		this.stationArrivee = arrivee;
 		this.stationDepart = depart;
 		this.parcours = "";
 		this.ligneArrivee = listeLigneArrivee;
 		this.ligneDepart = listeLigneDepart;
+		this.bl = new ArrayList<Ligne>();
+		this.heure = paramHeure;
+		this.minute = paramMinute;
+		this.whatHeure = b;
+	}
+	
+	// Obtenir l'heure:départ d'arrivée
+	public String getHeure()
+	{ 
+		return (this.heure + ":" + this.minute);
 	}
 
 	// Retourne la station de depart.
@@ -164,41 +180,25 @@ public class Itineraire
 		
 		if (this.verifLigne() != null)
 		{
-			Ligne l = this.getLigne(this.verifLigne());
-			String terminus1 = l.getListeStation().get(1).getNom();
-			String terminus2 = l.getListeStation().get(l.getIndexSecondTerminus()).getNom();
-			this.parcours += "Prendre la station " + this.stationDepart.getNom() + ".\n";
-			this.parcours += "Ligne " + this.verifLigne() + ".\n";
-			if (l.getIdStation(this.stationDepart)
-					<
-				l.getIdStation(this.stationArrivee))
-				this.parcours += "Direction " + terminus2 + ".\n";
-			else if (l.getIdStation(this.stationDepart)
-					>
-					l.getIdStation(this.stationArrivee))
-				this.parcours += "Direction " + terminus1 + ".\n";
-			this.parcours += "Descendre a " + this.stationArrivee.getNom() + ".\n";
+			this.parcours = this.addParcours(this.stationDepart, this.stationArrivee);
 		}
 		else if (this.ligneMetro())
 		{
-			ArrayList<Ligne> bl = this.getLignesBus();
+			this.bl.add(Bdd.nouvelleLigne("B2"));
+			Log.e(TAG, "BLACKLIST AJOUTER TAMERE");
 			String s = "";
-			this.calculerItineraire(this.stationDepart, this.stationArrivee, this.ligneDepart, bl, s);
+			this.calculerItineraire(this.stationDepart, this.stationArrivee, this.ligneDepart, s);
 			this.ordonnerParcours();
 		}
 		else
 		{
-			ArrayList<Ligne> bl = new ArrayList<Ligne>();
 			String s = "";
-			while(this.calculerItineraire(this.stationDepart, this.stationArrivee, this.ligneDepart, bl, s));
-			{
-				Log.e(TAG, "calculer Itineraire = true");
-			}
+			this.calculerItineraire(this.stationDepart, this.stationArrivee, this.ligneDepart, s);
 			this.ordonnerParcours();
 		}
 	}
 	
-	public boolean calculerItineraire(Station StationDepart, Station StationArrivee, ArrayList<Ligne> listeLigne, ArrayList<Ligne> blacklist, String res)
+	public boolean calculerItineraire(Station StationDepart, Station StationArrivee, ArrayList<Ligne> listeLigne, String res)
 	{
 		Log.d(TAG, "début calculerIti res = \n" + res);
 		Set<Integer> setStation;
@@ -207,10 +207,10 @@ public class Itineraire
 		ArrayList<Ligne> bufferListeLigne = new ArrayList<Ligne>();
 		Ligne ligneAutre;
 		String bufferString = "";
-		listeLigne = this.supprLigne(listeLigne, blacklist);
+		listeLigne = this.supprLigne(listeLigne, this.bl);
 		for (Ligne l : listeLigne)
 		{
-			blacklist.add(l);
+			this.bl.add(l);
 			Log.d(TAG, "ligne en cours = " + l.getNom());
 			setStation = l.getListeStation().keySet();
 			it = setStation.iterator();
@@ -222,7 +222,9 @@ public class Itineraire
 				Log.d(TAG, "station en cours = " + bufferStation.getNom());
 				if (this.verifLigne(bufferStation, StationArrivee) != null
 					&&
-					this.autreLigneEnCommun(StationDepart, bufferStation, l))
+					this.autreLigneEnCommun(StationDepart, bufferStation, l)
+					&&
+					!this.estDansListe(ligneAutre))
 				{
 					Log.d(TAG, "if ; res #1 =\n" + res);
 					this.parcours = this.parcours + this.addParcours(StationDepart, bufferStation);
@@ -231,13 +233,13 @@ public class Itineraire
 					Log.d(TAG, "if ; res #3 =\n" + res);
 					return true;
 				}		
-				else if (ligneAutre != null && !this.estDansListe(blacklist, ligneAutre))
+				else if (ligneAutre != null && !this.estDansListe(ligneAutre))
 				{
 					bufferString = "";
 					Log.d(TAG, "2eme condition ; bufferStation = " + bufferStation.getNom());
 					Log.d(TAG, "2eme condition ; l = " + l.getNom());
 					bufferListeLigne = this.toArrayList(bufferStation.listeLigne());
-					if (this.calculerItineraire(bufferStation, StationArrivee, this.supprLigne(bufferListeLigne, listeLigne), blacklist, bufferString))
+					if (this.calculerItineraire(bufferStation, StationArrivee, this.supprLigne(bufferListeLigne, listeLigne), bufferString))
 					{	
 						Log.d(TAG, "else if ; res #1 =\n" + res);
 						this.parcours = this.addParcours(StationDepart, bufferStation) + this.parcours;
@@ -273,10 +275,64 @@ public class Itineraire
 					>
 					l.getIdStation(b))
 				res = res + "Direction " + terminus1 + ".\n";
+			int nbMin;
+			if (this.verifLigne(a, b).charAt(0) == 'B')
+				nbMin = 3;
+			else
+				nbMin = 2;
+			if (this.whatHeure)
+				this.addMinute(nbMin * nbStationsEntre(a, b));
+			else
+				this.delMinute(nbMin * nbStationsEntre(a, b));
 			res = res + "Descendre à station " + b.getNom() + ".\n";
 		}
 		Log.d(TAG, "addParcours ; res =\n" + res);
 		return res;
+	}
+	
+	private int nbStationsEntre(Station a, Station b)
+	{
+		Ligne l = Bdd.nouvelleLigne((this.verifLigne(a, b)));
+		Log.e(TAG, "#nbStationsEntre# res = " + java.lang.Math.abs(l.getIdStation(a) - l.getIdStation(b)));
+		return(java.lang.Math.abs(l.getIdStation(a) - l.getIdStation(b)));
+	}
+	
+	private void addMinute(int nbMinute)
+	{
+		int h = Integer.decode(this.heure);
+		int m = Integer.decode(this.minute);
+		if (m + nbMinute >= 60)
+		{
+			m += nbMinute;
+			h += m / 60;
+			m = m % 60;
+		}
+		else
+			m += nbMinute;
+		
+		this.heure = String.valueOf(h);
+		Log.e(TAG, "#addMinute# paramHeure = " + this.heure);
+		this.minute = String.valueOf(m);
+		Log.e(TAG, "#addMinute# paramMinute = " + this.minute);
+	}
+	
+	private void delMinute(int nbMinute)
+	{
+		int h = Integer.decode(this.heure);
+		int m = Integer.decode(this.minute);
+		if (nbMinute <= m)
+			this.minute = String.valueOf(m - nbMinute);
+		else
+		{
+			this.minute = String.valueOf((60-(nbMinute%60)+m));
+			this.heure = String.valueOf(h-(nbMinute/60)-1);
+			/*if (nbMinute % 60 > 0)
+				this.addMinute(60);*/
+		}
+		h = Integer.decode(this.heure);
+		if (h < 0)
+			h = 24 + h;
+		this.heure = String.valueOf(h);
 	}
 	
 	private Ligne getLigne(String nomLigne)
@@ -354,6 +410,18 @@ public class Itineraire
 			}
 		}
 		return resultat;
+	}
+	
+	private boolean estDansListe(Ligne l)
+	{
+		Log.d(TAG, "estDansListe ; l = " + l.getNom());
+		for (Ligne li : this.bl)
+		{
+			Log.d(TAG, "estDansListe ; li = " + li.getNom());
+			if (li.getNom().equals(l.getNom()))
+				return true;
+		}
+		return false;
 	}
 	
 	private boolean estDansListe(ArrayList<Ligne> listeLigne, Ligne l)

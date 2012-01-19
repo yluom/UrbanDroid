@@ -91,7 +91,7 @@ public class DisplayPlanGoogleActivity extends MapActivity implements LocationLi
 	 		this.mapView.setClickable(true);
 	    	 this.mapView.setBuiltInZoomControls(true);
 	    	 this.mapView.preLoad();
-	    	 this.userLocation.enableCompass();
+	    	// this.userLocation.enableCompass();
 	    	
 	     }
 	     catch (Exception ex)

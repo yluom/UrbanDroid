@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.util.Log;
 import android.view.*;
@@ -23,14 +22,10 @@ public class DisplayResItineraireActivity extends Activity
 {
 	
 	private static final String TAG = "DisplayResItineraireActivity";
-	private ProgressDialog progressDialog;
-
 	
      public void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
      setContentView(R.layout.resitineraire);
-     progressDialog = new ProgressDialog(this);
-
      
      OnClickListener menuSwitcher = new OnClickListener()
      {
@@ -64,12 +59,11 @@ public class DisplayResItineraireActivity extends Activity
      ImageView iv5 = (ImageView) findViewById(R.id.btn_pla);
      iv5.setOnClickListener(menuSwitcher);
      TextView tv = (TextView) findViewById(R.id.texteParcours);
-
      try
      {
 	     
 	     /*
-	      * CODE DE L'ITINERAIRE - FloppyBomb
+	      * CODE DE L'.texteHeureITINERAIRE - FloppyBomb
 	      * 
 	      * Utilisation : TODO
 	      */
@@ -120,10 +114,16 @@ public class DisplayResItineraireActivity extends Activity
 	    	 Log.d(TAG, "Ligne arrivee added = " + buffer);
 	     }
 	     
-	     Itineraire iti = new Itineraire(depart, arrivee, listeLigneDepart, listeLigneArrivee);
+	     String heure = bundle.getString("heure");
+	     String minute = bundle.getString("minute");
+	     boolean radio = bundle.getBoolean("radio");
+	     
+	     Itineraire iti = new Itineraire(depart, arrivee, listeLigneDepart, listeLigneArrivee, heure, minute, radio);
 	     iti.calculerItineraire();
-	     tv.setText(iti.toString());
-	     //Toast.makeText(this, "Resultat itineraire = \n" + iti.toString(), Toast.LENGTH_LONG).show();
+	     if (radio)
+	    	 tv.setText("Vous arriverez a : " + iti.getHeure() + ".\n" + iti.toString());
+	     else
+	    	 tv.setText("Vous devez partir a : " + iti.getHeure() + ".\n" + iti.toString());
 	     Log.d(TAG, "Resultat itineraire = \n" + iti.toString());
      }
 		catch(Exception ex)

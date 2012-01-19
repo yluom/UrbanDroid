@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 
 public class DisplayPlanActivity extends Activity implements OnTouchListener {
     /** Called when the activity is first created. */
+	public static Matrix matrix = new Matrix();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +42,7 @@ public class DisplayPlanActivity extends Activity implements OnTouchListener {
         	  						startActivity(intent); break;
         	  	case R.id.btn_fav: intent = new Intent(DisplayPlanActivity.this, DisplayFavorisActivity.class);
         	  						startActivity(intent); break;
-        	  	case R.id.btn_pla: intent = new Intent(DisplayPlanActivity.this, UrbanDroidActivity.class);
+        	  	case R.id.btn_pla: intent = new Intent(DisplayPlanActivity.this, DisplayPlanActivity.class);
         	  						startActivity(intent); break;
         	  	case R.id.ongletGoogleMap: intent = new Intent(DisplayPlanActivity.this, DisplayPlanGoogleActivity.class);
 					startActivity(intent); break;
@@ -66,10 +67,13 @@ public class DisplayPlanActivity extends Activity implements OnTouchListener {
         iv7.setOnClickListener(menuSwitcher);
         
         ImageView iv8 = (ImageView) findViewById(R.id.plantisseo);
+        float [] values = {(float) 0.48965842, (float) 0.0, (float) -506.6595, (float) 0.0, (float) 0.48965842, (float) -452.84998, (float) 0.0, (float) 0.0, (float) 1.0};
+        matrix.setValues(values);
+        iv8.setImageMatrix(matrix);
         iv8.setOnTouchListener(this);
     }
     
-    Matrix matrix = new Matrix();
+    
     Matrix savedMatrix = new Matrix();
     PointF start = new PointF();
     PointF mid = new PointF();
@@ -143,6 +147,7 @@ public class DisplayPlanActivity extends Activity implements OnTouchListener {
 			   }	
 		}
 		view.setImageMatrix(matrix);
+		//Log.d(TAG,"matrix="+matrix.toString());
 		return true;
 	}
 }
