@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.util.Log;
 import android.view.*;
@@ -22,11 +23,13 @@ public class DisplayResItineraireActivity extends Activity
 {
 	
 	private static final String TAG = "DisplayResItineraireActivity";
+
 	
      public void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
      setContentView(R.layout.resitineraire);
-     
+    // DisplayItineraireActivity.dialog.dismiss();
+    
      OnClickListener menuSwitcher = new OnClickListener()
      {
        public void onClick(View actualView)
@@ -59,72 +62,20 @@ public class DisplayResItineraireActivity extends Activity
      ImageView iv5 = (ImageView) findViewById(R.id.btn_pla);
      iv5.setOnClickListener(menuSwitcher);
      TextView tv = (TextView) findViewById(R.id.texteParcours);
+     TextView tv2 = (TextView) findViewById(R.id.textHeure);
      try
      {
 	     
-	     /*
-	      * CODE DE L'.texteHeureITINERAIRE - FloppyBomb
-	      * 
-	      * Utilisation : TODO
-	      */
-    	 // Instancier les stations
          Bundle bundle = this.getIntent().getExtras();
-         String stationDepart = bundle.getString("StationDepart");
-         String stationArrivee = bundle.getString("StationArrivee");
-         
-         Station depart = this.getStation(stationDepart, "MA");
-         if (depart == null)
-        	 depart = this.getStation(stationDepart, "MB");
-         if (depart == null)
-        	 depart = this.getStation(stationDepart, "B2");
-         if (depart == null)
-        	 depart = this.getStation(stationDepart, "T1");
-         
-         Station arrivee = this.getStation(stationArrivee, "MA");
-         if (arrivee == null)
-        	 arrivee = this.getStation(stationArrivee, "MB");
-         if (arrivee == null)
-        	 arrivee = this.getStation(stationArrivee, "B2");
-         if (arrivee == null)
-        	 arrivee = this.getStation(stationArrivee, "T1");
-         
-         Log.e(TAG, "stationDepart = " + stationDepart);
-         Log.e(TAG, "stationArrivee = " + stationArrivee);
-        
-	     ArrayList<Ligne> listeLigneDepart = new ArrayList<Ligne>();
-	     ArrayList<Ligne> listeLigneArrivee = new ArrayList<Ligne>();
-	     // Remplir la liste de ligne de la station de d�part
-	     Set<String> setLigne = depart.listeLigne().keySet();
-	     Iterator<String> it = setLigne.iterator();
-	     String buffer = "";
-	     while (it.hasNext())
-	     {
-	    	 buffer = it.next();
-	    	 listeLigneDepart.add(nouvelleLigne(buffer));
-	    	 Log.d(TAG, "Ligne depart added = " + buffer);
-	     }
-	     // Remplir la liste de ligne de la station d'arriv�e
-	     Set<String> setLigne2 = arrivee.listeLigne().keySet();
-	     Iterator<String> it2 = setLigne2.iterator();
-	     buffer = "";
-	     while (it2.hasNext())
-	     {
-	    	 buffer = it2.next();
-	    	 listeLigneArrivee.add(nouvelleLigne(buffer));
-	    	 Log.d(TAG, "Ligne arrivee added = " + buffer);
-	     }
-	     
-	     String heure = bundle.getString("heure");
-	     String minute = bundle.getString("minute");
 	     boolean radio = bundle.getBoolean("radio");
-	     
-	     Itineraire iti = new Itineraire(depart, arrivee, listeLigneDepart, listeLigneArrivee, heure, minute, radio);
-	     iti.calculerItineraire();
+	     String iti = bundle.getString("iti");
+	     String horaires = bundle.getString("horaires");
 	     if (radio)
-	    	 tv.setText("Vous arriverez a : " + iti.getHeure() + ".\n" + iti.toString());
+	    	 tv2.setText("Vous arriverez a : " + horaires + ".");
 	     else
-	    	 tv.setText("Vous devez partir a : " + iti.getHeure() + ".\n" + iti.toString());
-	     Log.d(TAG, "Resultat itineraire = \n" + iti.toString());
+	    	 tv2.setText("Vous devez partir a : " + horaires + ".");
+	     tv.setText(iti);
+	     Log.d(TAG, "Resultat itineraire = \n" + iti);
      }
 		catch(Exception ex)
 		{

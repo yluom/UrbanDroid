@@ -1,6 +1,8 @@
 package fr.android.urbandroid;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.TreeMap;
 
 import android.database.Cursor;
@@ -14,6 +16,22 @@ public class Bdd
 	public static SQLiteDatabase db = null;
 	private SQLiteDatabase nonStaticDb = null;
 	private Cursor c = null;
+	
+ 	public static Station getStation(String s, String ligne)
+ 	{
+ 		Ligne l = nouvelleLigne(ligne);
+        int i;
+ 		Set<Integer> setInt = l.getListeStation().keySet();
+ 		Iterator<Integer> itInt = setInt.iterator();
+ 		while(itInt.hasNext())
+ 		{
+ 			i = itInt.next();
+ 			if (l.getStation(i).getNom().equals(s))
+ 				return l.getStation(i);
+ 		}
+ 		return null;
+ 		
+ 	}
 	
 	public static Cursor fetchAllTitles(String nomTable, String[] colonnes,  String select, String[] where, String groupby, String having, String orderby)
 	{

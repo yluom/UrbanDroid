@@ -8,6 +8,7 @@ import java.util.TreeMap;
 
 import fr.android.urbandroid.*;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -35,11 +36,19 @@ public class DisplayItineraireActivity extends Activity
 {
 	
 	private static final String TAG = "DisplayItineraireActivity";
+	public static ProgressDialog dialog;
 	
      public void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
      setContentView(R.layout.itineraire);
      final CheckBox checkBoxFav = (CheckBox) findViewById(R.id.checkBoxFav);
+        // prepare the dialog box
+      dialog = new ProgressDialog(this);
+       // make the progress bar cancelable
+       dialog.setCancelable(true);
+       // set a message text
+       dialog.setMessage("Calcul de l'itinéraire...");
+
      
      OnClickListener menuSwitcher = new OnClickListener()
      {
@@ -73,6 +82,14 @@ public class DisplayItineraireActivity extends Activity
 				int idStationArr = cursorArrivee.getInt(cursorArrivee.getColumnIndex("_id"));
      	  		if ((heure > 6 || heure == 0) && (!stationDepart.equals(stationArrivee)))
      	  		{
+     	            
+     	           runOnUiThread(new Runnable() {
+     	        	    public void run() {
+     	     	            // show it
+     	     	            dialog.show();
+     	        	    }
+     	        	});
+
 		 	  		intent = new Intent(DisplayItineraireActivity.this, DisplayResItineraireActivity.class);
 		 	  		Bundle bundle = new Bundle();
 		 	  		bundle.putString("StationDepart", stationDepart);
@@ -100,13 +117,60 @@ public class DisplayItineraireActivity extends Activity
 							bdd.openDb();
 							Bdd.db.execSQL("INSERT INTO FAVORIS VALUES('"+depart+"','"+arrivee+"','"+ nomFav+"','')");
 							bdd.db.close();
-						toaster("Favori ajoutÃ© !");
+						toaster("Favori ajouté !");
 					}
-					intent.putExtras(bundle);
-					startActivity(intent);
+				         
+				         Station depart = Bdd.getStation(stationDepart, "MA");
+				         if (depart == null)
+				        	 depart = Bdd.getStation(stationDepart, "MB");
+				         if (depart == null)
+				        	 depart = Bdd.getStation(stationDepart, "B2");
+				         if (depart == null)
+				        	 depart = Bdd.getStation(stationDepart, "T1");
+				         
+				         Station arrivee = Bdd.getStation(stationArrivee, "MA");
+				         if (arrivee == null)
+				        	 arrivee = Bdd.getStation(stationArrivee, "MB");
+				         if (arrivee == null)
+				        	 arrivee = Bdd.getStation(stationArrivee, "B2");
+				         if (arrivee == null)
+				        	 arrivee = Bdd.getStation(stationArrivee, "T1");
+				         
+				         Log.e(TAG, "stationDepart = " + stationDepart);
+				         Log.e(TAG, "stationArrivee = " + stationArrivee);
+				        
+					     ArrayList<Ligne> listeLigneDepart = new ArrayList<Ligne>();
+					     ArrayList<Ligne> listeLigneArrivee = new ArrayList<Ligne>();
+					     // Remplir la liste de ligne de la station de dï¿½part
+					     Set<String> setLigne = depart.listeLigne().keySet();
+					     Iterator<String> it = setLigne.iterator();
+					     String buffer = "";
+					     while (it.hasNext())
+					     {
+					    	 buffer = it.next();
+					    	 listeLigneDepart.add(nouvelleLigne(buffer));
+					    	 Log.d(TAG, "Ligne depart added = " + buffer);
+					     }
+					     // Remplir la liste de ligne de la station d'arrivï¿½e
+					     Set<String> setLigne2 = arrivee.listeLigne().keySet();
+					     Iterator<String> it2 = setLigne2.iterator();
+					     buffer = "";
+					     while (it2.hasNext())
+					     {
+					    	 buffer = it2.next();
+					    	 listeLigneArrivee.add(nouvelleLigne(buffer));
+					    	 Log.d(TAG, "Ligne arrivee added = " + buffer);
+					     }
+					     
+					     Itineraire iti = new Itineraire(depart, arrivee, listeLigneDepart, listeLigneArrivee, bundle.getString("heure"), bundle.getString("minute"), bundle.getBoolean("radio"));
+					     iti.calculerItineraire();
+					     bundle.putString("horaires", iti.getHeure());
+					     bundle.putString("iti", iti.toString());
+					     intent.putExtras(bundle);
+					     startActivity(intent);
      	  		}
      	  		else
-     	  			toaster("T'es un petit francul toi!");
+     	  			toaster("Horaire et/ou itinéraire incorrect!");
 				break;
      	  }
        }       
